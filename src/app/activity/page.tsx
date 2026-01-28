@@ -185,7 +185,7 @@ export default function ActivityPage() {
           type: 'skill',
           action: 'created',
           title: `Skill: ${skill.name}`,
-          description: skill.proficiency ? `Proficiency: ${skill.proficiency}` : '',
+          description: skill.level ? `Level: ${skill.level}${skill.category ? ` | Category: ${skill.category}` : ''}` : (skill.category ? `Category: ${skill.category}` : ''),
           timestamp: skill.createdAt,
           icon: (
             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
