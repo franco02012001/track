@@ -178,9 +178,9 @@ export default function SettingsPage() {
             <div className="flex items-center gap-4">
               <div className="relative">
                 <div className="w-11 h-11 rounded-full bg-blue-600 flex items-center justify-center ring-2 ring-blue-100 shadow-sm overflow-hidden">
-                  {(user?.picture || previewUrl) ? (
+                  {(user?.picture ?? previewUrl) ? (
                     <img 
-                      src={user?.picture || previewUrl || ''} 
+                      src={(user?.picture ?? previewUrl) ?? ''} 
                       alt={user?.name || 'Profile'} 
                       className="w-11 h-11 rounded-full object-cover" 
                     />
