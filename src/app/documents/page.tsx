@@ -88,7 +88,7 @@ export default function DocumentsPage() {
     
     setUploading(true);
     try {
-      if (editingDoc) {
+      if (editingDoc && editingDoc._id) {
         // Update existing document
         await documentsApi.update(editingDoc._id, formData);
         showAlert('Success', 'Document updated successfully!', 'success');
@@ -128,15 +128,20 @@ export default function DocumentsPage() {
   };
 
   const handleDelete = async (id: string) => {
-    if (!confirm('Are you sure you want to delete this document?')) return;
-    try {
-      await documentsApi.delete(id);
-      fetchDocuments();
-      alert('Document deleted successfully!');
-    } catch (error: any) {
-      console.error('Error deleting document:', error);
-      alert(error?.message || 'Error deleting document. Please try again.');
-    }
+    showConfirm(
+      'Delete Document',
+      'Are you sure you want to delete this document? This action cannot be undone.',
+      async () => {
+        try {
+          await documentsApi.delete(id);
+          fetchDocuments();
+          showAlert('Success', 'Document deleted successfully!', 'success');
+        } catch (error: any) {
+          console.error('Error deleting document:', error);
+          showAlert('Error', error?.message || 'Error deleting document. Please try again.', 'error');
+        }
+      }
+    );
   };
 
   const handleAnalyze = async (doc: Document) => {
@@ -449,7 +454,7 @@ export default function DocumentsPage() {
                     </svg>
                     Download
                   </button>
-                  {doc.type === 'Resume' && doc.fileUrl?.startsWith('/uploads/') && (
+                  {doc.type === 'Resume' && doc.fileUrl && (
                     <button
                       onClick={() => handleAnalyze(doc)}
                       disabled={analyzing === doc._id}
