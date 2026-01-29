@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import AppLayout from '@/components/AppLayout';
 import AlertModal from '@/components/AlertModal';
@@ -25,7 +25,7 @@ const addWorkingDays = (startDate: Date, days: number): Date => {
   return result;
 };
 
-export default function ApplicationsPage() {
+function ApplicationsPageContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const { alertModal, confirmModal, showAlert, showConfirm, closeAlert, closeConfirm } = useModals();
@@ -1063,5 +1063,19 @@ export default function ApplicationsPage() {
         />
       </div>
     </AppLayout>
+  );
+}
+
+export default function ApplicationsPage() {
+  return (
+    <Suspense fallback={
+      <AppLayout>
+        <div className="max-w-7xl mx-auto">
+          <div className="text-center py-12 text-gray-500">Loading...</div>
+        </div>
+      </AppLayout>
+    }>
+      <ApplicationsPageContent />
+    </Suspense>
   );
 }
