@@ -16,7 +16,7 @@ export default function SettingsPage() {
   const [saving, setSaving] = useState(false);
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
-  const [previewUrl, setPreviewUrl] = useState<string | null>(null);
+  const [previewUrl, setPreviewUrl] = useState<string | undefined>(undefined);
   const [twoFactorEnabled, setTwoFactorEnabled] = useState(false);
   const [alertModal, setAlertModal] = useState<{ isOpen: boolean; title: string; message: string; type?: 'success' | 'error' | 'info' | 'warning' }>({
     isOpen: false,
@@ -49,7 +49,7 @@ export default function SettingsPage() {
       if (user.picture) {
         setPreviewUrl(user.picture);
       } else {
-        setPreviewUrl(null);
+        setPreviewUrl(undefined);
       }
     }
   }, [user]);
@@ -180,7 +180,7 @@ export default function SettingsPage() {
                 <div className="w-11 h-11 rounded-full bg-blue-600 flex items-center justify-center ring-2 ring-blue-100 shadow-sm overflow-hidden">
                   {(user?.picture || previewUrl) ? (
                     <img 
-                      src={user?.picture || previewUrl} 
+                      src={user?.picture || previewUrl || ''} 
                       alt={user?.name || 'Profile'} 
                       className="w-11 h-11 rounded-full object-cover" 
                     />
@@ -306,7 +306,7 @@ export default function SettingsPage() {
                             type="button"
                             onClick={() => {
                               setSelectedFile(null);
-                              setPreviewUrl(user?.picture || null);
+                              setPreviewUrl(user?.picture || undefined);
                               const input = document.getElementById('profile-picture-upload') as HTMLInputElement;
                               if (input) input.value = '';
                             }}
