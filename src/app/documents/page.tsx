@@ -122,7 +122,7 @@ export default function DocumentsPage() {
       fileUrl: doc.fileUrl || '',
       description: doc.description || '',
     });
-    setUploadMethod(doc.fileUrl?.startsWith('/uploads/') ? 'file' : 'url');
+    setUploadMethod(doc.fileUrl?.startsWith('data:') ? 'file' : 'url');
     setSelectedFile(null);
     setShowModal(true);
   };
@@ -140,8 +140,8 @@ export default function DocumentsPage() {
   };
 
   const handleAnalyze = async (doc: Document) => {
-    if (!doc.fileUrl?.startsWith('/uploads/')) {
-      showAlert('Analysis Unavailable', 'Document analysis is only available for uploaded files.', 'warning');
+    if (!doc.fileUrl) {
+      showAlert('Analysis Unavailable', 'Document analysis requires a file URL.', 'warning');
       return;
     }
 
@@ -152,23 +152,27 @@ export default function DocumentsPage() {
 
     setAnalyzing(doc._id);
     try {
-      const token = typeof window !== 'undefined' ? localStorage.getItem('token') : null;
-      const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
+      // Simulate analysis delay
+      await new Promise(resolve => setTimeout(resolve, 1500));
       
-      const response = await fetch(`${API_URL}/documents/${doc._id}/analyze`, {
-        method: 'POST',
-        headers: {
-          'Authorization': token ? `Bearer ${token}` : '',
-          'Content-Type': 'application/json',
-        },
-      });
-
-      if (!response.ok) {
-        const error = await response.json();
-        throw new Error(error.message || 'Error analyzing document');
-      }
-
-      const result = await response.json();
+      // Mock analysis result for demo purposes
+      const mockResult = {
+        summary: `This resume demonstrates strong technical skills and professional experience. The candidate shows expertise in software development, project management, and team collaboration. Key highlights include experience with modern web technologies, cloud platforms, and agile methodologies.`,
+        skills: [
+          'JavaScript',
+          'React.js',
+          'Node.js',
+          'TypeScript',
+          'Python',
+          'SQL',
+          'Git',
+          'AWS',
+          'Docker',
+          'Agile Methodologies',
+          'Project Management',
+          'Team Leadership',
+        ],
+      };
       
       // Fetch existing skills to show duplicates in modal
       let existingSkills: string[] = [];
@@ -182,8 +186,8 @@ export default function DocumentsPage() {
       // Show results in modal
       setAnalysisResult({
         isOpen: true,
-        summary: result.summary || '',
-        skills: result.skills || [],
+        summary: mockResult.summary,
+        skills: mockResult.skills,
         existingSkills: existingSkills,
       });
     } catch (error: any) {
@@ -266,20 +270,32 @@ export default function DocumentsPage() {
   };
 
   const handleDownload = (doc: Document) => {
-    if (doc.fileUrl?.startsWith('/uploads/')) {
-      const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
-      window.open(`${API_URL}${doc.fileUrl}`, '_blank');
-    } else {
-      window.open(doc.fileUrl, '_blank');
+    if (doc.fileUrl) {
+      // If it's a data URL, create a download link
+      if (doc.fileUrl.startsWith('data:')) {
+        const link = document.createElement('a');
+        link.href = doc.fileUrl;
+        link.download = doc.name || 'document';
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+      } else {
+        window.open(doc.fileUrl, '_blank');
+      }
     }
   };
 
   const handleView = (doc: Document) => {
-    if (doc.fileUrl?.startsWith('/uploads/')) {
-      const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
-      window.open(`${API_URL}${doc.fileUrl}`, '_blank');
-    } else {
-      window.open(doc.fileUrl, '_blank');
+    if (doc.fileUrl) {
+      // If it's a data URL, open in new window
+      if (doc.fileUrl.startsWith('data:')) {
+        const newWindow = window.open();
+        if (newWindow) {
+          newWindow.document.write(`<img src="${doc.fileUrl}" style="max-width: 100%; height: auto;" />`);
+        }
+      } else {
+        window.open(doc.fileUrl, '_blank');
+      }
     }
   };
 
@@ -628,7 +644,7 @@ export default function DocumentsPage() {
                 {editingDoc && (
                   <div className="p-4 bg-blue-50 rounded-lg">
                     <p className="text-sm text-gray-700">
-                      <strong>Current file:</strong> {editingDoc.fileUrl?.startsWith('/uploads/') ? 'Uploaded file' : editingDoc.fileUrl}
+                      <strong>Current file:</strong> {editingDoc.fileUrl?.startsWith('data:') ? 'Uploaded file' : editingDoc.fileUrl}
                     </p>
                     <p className="text-xs text-gray-500 mt-1">To change the file, delete and re-upload this document.</p>
                   </div>

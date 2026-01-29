@@ -93,10 +93,8 @@ export default function SettingsPage() {
       const updatedUser = await usersApi.uploadPicture(selectedFile);
       // Update preview with new picture URL
       if (updatedUser.picture) {
-        // If it's a local upload, construct full URL
-        const pictureUrl = updatedUser.picture.startsWith('/uploads/') 
-          ? `http://localhost:8000${updatedUser.picture}` 
-          : updatedUser.picture;
+        // Use the picture URL directly (data URL or external URL)
+        const pictureUrl = updatedUser.picture;
         setPreviewUrl(pictureUrl);
       }
       // Refresh profile to update context
@@ -182,7 +180,7 @@ export default function SettingsPage() {
                 <div className="w-11 h-11 rounded-full bg-blue-600 flex items-center justify-center ring-2 ring-blue-100 shadow-sm overflow-hidden">
                   {(user?.picture || previewUrl) ? (
                     <img 
-                      src={(user?.picture || previewUrl)?.startsWith('/uploads/') ? `http://localhost:8000${user?.picture || previewUrl}` : (user?.picture || previewUrl)} 
+                      src={user?.picture || previewUrl} 
                       alt={user?.name || 'Profile'} 
                       className="w-11 h-11 rounded-full object-cover" 
                     />
@@ -267,7 +265,7 @@ export default function SettingsPage() {
                     <div>
                       {previewUrl ? (
                         <img
-                          src={previewUrl.startsWith('/uploads/') ? `http://localhost:8000${previewUrl}` : previewUrl}
+                          src={previewUrl}
                           alt={formData.name || 'Profile'}
                           className="w-24 h-24 rounded-full object-cover border-2 border-slate-200 shadow-sm"
                         />

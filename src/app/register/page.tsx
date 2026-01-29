@@ -2,19 +2,38 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
-import { oauthUrls } from '@/lib/api';
+import { useRouter } from 'next/navigation';
+import { useAuth } from '@/context/AuthContext';
 
 export default function RegisterPage() {
+  const router = useRouter();
+  const { login } = useAuth();
   const [loading, setLoading] = useState<string | null>(null);
 
   const handleGoogleSignup = () => {
     setLoading('google');
-    window.location.href = oauthUrls.google;
+    // Simulate OAuth signup with demo user
+    setTimeout(() => {
+      login('Demo User', 'demo@example.com', 'google');
+      router.push('/');
+    }, 500);
   };
 
   const handleFacebookSignup = () => {
     setLoading('facebook');
-    window.location.href = oauthUrls.facebook;
+    // Simulate OAuth signup with demo user
+    setTimeout(() => {
+      login('Demo User', 'demo@example.com', 'facebook');
+      router.push('/');
+    }, 500);
+  };
+
+  const handleDemoSignup = () => {
+    setLoading('demo');
+    setTimeout(() => {
+      login('Demo User', 'demo@example.com');
+      router.push('/');
+    }, 500);
   };
 
   return (
@@ -46,6 +65,13 @@ export default function RegisterPage() {
               </div>
               <h2 className="text-3xl font-bold text-white mb-2">Create account</h2>
               <p className="text-gray-400">Get started with your social account</p>
+            </div>
+
+            {/* Demo Mode Notice */}
+            <div className="mb-6 p-4 bg-yellow-500/10 border border-yellow-500/20 rounded-xl">
+              <p className="text-yellow-300 text-sm text-center">
+                🎯 Demo Mode: All data is stored locally in your browser
+              </p>
             </div>
 
             {/* Social Buttons */}
@@ -90,6 +116,22 @@ export default function RegisterPage() {
                 )}
                 <span>Sign up with Facebook</span>
               </button>
+
+              {/* Quick Demo Signup */}
+              <button
+                onClick={handleDemoSignup}
+                disabled={loading !== null}
+                className="w-full flex items-center justify-center gap-4 py-4 px-6 bg-gradient-to-r from-violet-600 to-fuchsia-600 text-white font-semibold rounded-2xl transition-all duration-300 hover:from-violet-700 hover:to-fuchsia-700 hover:scale-[1.02] active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed shadow-lg"
+              >
+                {loading === 'demo' ? (
+                  <svg className="animate-spin h-6 w-6 text-white" fill="none" viewBox="0 0 24 24">
+                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
+                  </svg>
+                ) : (
+                  <span>Quick Demo Signup</span>
+                )}
+              </button>
             </div>
 
             {/* Benefits */}
@@ -99,7 +141,7 @@ export default function RegisterPage() {
                 {[
                   'No password to create or remember',
                   'Faster sign-in experience',
-                  'Secure OAuth 2.0 authentication',
+                  'Secure authentication',
                 ].map((benefit, i) => (
                   <li key={i} className="flex items-center gap-2 text-gray-300 text-sm">
                     <svg className="w-4 h-4 text-emerald-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">

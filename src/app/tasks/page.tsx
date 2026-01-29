@@ -16,6 +16,8 @@ export default function TasksPage() {
   const [editingTask, setEditingTask] = useState<Task | null>(null);
   const [viewMode, setViewMode] = useState<'list' | 'kanban'>('list');
   const [draggedTask, setDraggedTask] = useState<Task | null>(null);
+  const [viewingTask, setViewingTask] = useState<Task | null>(null);
+  const [showViewModal, setShowViewModal] = useState(false);
   const [formData, setFormData] = useState({
     title: '',
     description: '',
@@ -180,7 +182,7 @@ export default function TasksPage() {
       );
       setTasks(updatedTasks);
 
-      // Update on backend
+      // Update task status
       await tasksApi.update(draggedTask._id, { status: newStatus });
       setDraggedTask(null);
     } catch (error) {
@@ -264,110 +266,116 @@ export default function TasksPage() {
         ) : viewMode === 'kanban' ? (
           /* Kanban Board View */
           <div className="overflow-x-auto pb-4">
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 min-w-max">
+            <div className="flex gap-4 min-w-max">
               {statusColumns.map((column) => {
                 const columnTasks = getTasksByStatus(column.id as Task['status']);
                 return (
                   <div
                     key={column.id}
-                    className={`rounded-xl border-2 ${column.color} p-4 min-w-[300px]`}
+                    className="flex-shrink-0 w-72"
                     onDragOver={handleDragOver}
                     onDrop={(e) => handleDrop(e, column.id as Task['status'])}
                   >
-                    <div className="flex items-center justify-between mb-4">
-                      <h3 className="text-lg font-semibold text-gray-900">{column.label}</h3>
-                      <span className="px-2 py-1 text-xs font-medium bg-white rounded-full text-gray-700">
-                        {columnTasks.length}
-                      </span>
-                    </div>
-                    <div className="space-y-3 min-h-[200px]">
-                      {columnTasks.map((task) => (
-                        <div
-                          key={task._id}
-                          draggable
-                          onDragStart={(e) => handleDragStart(e, task)}
-                          className="bg-white rounded-lg p-4 shadow-sm border border-gray-200 cursor-move hover:shadow-md transition cursor-grab active:cursor-grabbing"
-                        >
-                          <div className="flex items-start justify-between mb-2">
-                            <h4 className="font-semibold text-gray-900 text-sm">{task.title}</h4>
-                            <span className={`px-2 py-0.5 text-xs font-medium rounded-full flex-shrink-0 ${
-                              task.priority === 'High' ? 'bg-red-50 text-red-700' :
-                              task.priority === 'Medium' ? 'bg-yellow-50 text-yellow-700' :
-                              'bg-green-50 text-green-700'
-                            }`}>
-                              {task.priority}
-                            </span>
-                          </div>
-                          {task.description && (
-                            <p className="text-xs text-gray-600 mb-2 line-clamp-2">{task.description}</p>
-                          )}
-                          {task.applicationId && getApplicationName(task.applicationId) && (
-                            <div className="mb-2">
-                              <span className="text-xs text-blue-600 bg-blue-50 px-2 py-0.5 rounded-full inline-flex items-center gap-1">
+                    <div className="bg-gray-50 rounded-lg p-4 border border-gray-200">
+                      <div className="flex items-center justify-between mb-3">
+                        <h3 className="text-sm font-semibold text-gray-900 flex items-center gap-2">
+                          <span className={`w-2 h-2 rounded-full ${
+                            column.id === 'Completed' ? 'bg-green-500' :
+                            column.id === 'In Progress' ? 'bg-blue-500' :
+                            'bg-gray-400'
+                          }`}></span>
+                          {column.label}
+                        </h3>
+                        <span className="text-xs text-gray-500 bg-white px-2 py-0.5 rounded-full">
+                          {columnTasks.length}
+                        </span>
+                      </div>
+                      <div className="space-y-3 min-h-[200px]">
+                        {columnTasks.map((task) => (
+                          <div
+                            key={task._id}
+                            draggable
+                            onDragStart={(e) => handleDragStart(e, task)}
+                            className="bg-white rounded-lg p-4 shadow-sm border border-gray-200 hover:shadow-md transition cursor-move"
+                          >
+                            <div className="flex items-start justify-between mb-2">
+                              <div className="flex-1 min-w-0">
+                                <h4 className="text-sm font-semibold text-gray-900 truncate">{task.title}</h4>
+                                {task.description && (
+                                  <p className="text-xs text-gray-600 mt-0.5 line-clamp-2">{task.description}</p>
+                                )}
+                              </div>
+                              <div className="flex gap-1 ml-2">
+                                <button
+                                  onClick={(e) => {
+                                    e.stopPropagation();
+                                    setViewingTask(task);
+                                    setShowViewModal(true);
+                                  }}
+                                  className="p-1 text-gray-400 hover:text-gray-600 transition"
+                                  title="View"
+                                >
+                                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                                  </svg>
+                                </button>
+                                <button
+                                  onClick={(e) => {
+                                    e.stopPropagation();
+                                    setEditingTask(task);
+                                    setFormData({
+                                      title: task.title,
+                                      description: task.description || '',
+                                      priority: task.priority,
+                                      status: task.status,
+                                      dueDate: task.dueDate ? new Date(task.dueDate).toISOString().split('T')[0] : '',
+                                      applicationId: task.applicationId || '',
+                                    });
+                                    setShowModal(true);
+                                  }}
+                                  className="p-1 text-blue-400 hover:text-blue-600 transition"
+                                  title="Edit"
+                                >
+                                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                                  </svg>
+                                </button>
+                              </div>
+                            </div>
+                            <div className="flex items-center gap-2 mb-2">
+                              <span className={`px-2 py-0.5 text-xs font-medium rounded-full ${
+                                task.priority === 'High' ? 'bg-red-100 text-red-700' :
+                                task.priority === 'Medium' ? 'bg-yellow-100 text-yellow-700' :
+                                'bg-green-100 text-green-700'
+                              }`}>
+                                {task.priority}
+                              </span>
+                            </div>
+                            {task.applicationId && getApplicationName(task.applicationId) && (
+                              <div className="flex items-center gap-1 text-xs text-gray-500 mb-2">
                                 <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
                                 </svg>
-                                {getApplicationName(task.applicationId)?.split(' at ')[1]}
-                              </span>
-                            </div>
-                          )}
-                          {task.dueDate && (
-                            <div className="flex items-center gap-1 text-xs text-gray-500 mt-2">
-                              <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                              </svg>
-                              {new Date(task.dueDate).toLocaleDateString()}
-                            </div>
-                          )}
-                          <div className="flex gap-2 mt-3 pt-3 border-t border-gray-100">
-                            <button
-                              onClick={(e) => {
-                                e.stopPropagation();
-                                setEditingTask(task);
-                                setFormData({
-                                  title: task.title,
-                                  description: task.description || '',
-                                  priority: task.priority,
-                                  status: task.status,
-                                  dueDate: task.dueDate ? new Date(task.dueDate).toISOString().split('T')[0] : '',
-                                  applicationId: task.applicationId || '',
-                                });
-                                setShowModal(true);
-                              }}
-                              className="flex-1 px-2 py-1 text-xs font-medium text-blue-600 hover:bg-blue-50 rounded transition"
-                            >
-                              Edit
-                            </button>
-                            <button
-                              onClick={(e) => {
-                                e.stopPropagation();
-                                showConfirm(
-                                  'Delete Task',
-                                  'Are you sure you want to delete this task? This action cannot be undone.',
-                                  async () => {
-                                    try {
-                                      await tasksApi.delete(task._id);
-                                      fetchTasks();
-                                      showAlert('Success', 'Task deleted successfully!', 'success');
-                                    } catch (error: any) {
-                                      console.error('Error deleting task:', error);
-                                      showAlert('Error', error?.message || 'Error deleting task. Please try again.', 'error');
-                                    }
-                                  }
-                                );
-                              }}
-                              className="flex-1 px-2 py-1 text-xs font-medium text-red-600 hover:bg-red-50 rounded transition"
-                            >
-                              Delete
-                            </button>
+                                {getApplicationName(task.applicationId)}
+                              </div>
+                            )}
+                            {task.dueDate && (
+                              <div className="text-xs text-gray-500">
+                                <svg className="w-3 h-3 inline mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                                </svg>
+                                {new Date(task.dueDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
+                              </div>
+                            )}
                           </div>
-                        </div>
-                      ))}
-                      {columnTasks.length === 0 && (
-                        <div className="text-center py-8 text-gray-400 text-sm border-2 border-dashed border-gray-200 rounded-lg">
-                          Drop tasks here
-                        </div>
-                      )}
+                        ))}
+                        {columnTasks.length === 0 && (
+                          <div className="text-center py-8 text-gray-400 text-sm border-2 border-dashed border-gray-200 rounded-lg">
+                            Drop tasks here
+                          </div>
+                        )}
+                      </div>
                     </div>
                   </div>
                 );
@@ -579,6 +587,158 @@ export default function TasksPage() {
           cancelText="Cancel"
           type="danger"
         />
+
+        {/* View Task Modal */}
+        {viewingTask && (
+          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+            <div className="bg-white rounded-xl max-w-3xl w-full max-h-[90vh] overflow-y-auto shadow-2xl">
+              <div className="p-6 border-b border-gray-200 bg-gradient-to-r from-blue-50 to-indigo-50">
+                <div className="flex items-center gap-3">
+                  <div className="w-12 h-12 rounded-lg bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center">
+                    <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+                    </svg>
+                  </div>
+                  <div>
+                    <h2 className="text-2xl font-bold text-gray-900">Task Details</h2>
+                    <p className="text-sm text-gray-600 mt-1">View complete task information</p>
+                  </div>
+                </div>
+              </div>
+
+              <div className="p-6 space-y-6">
+                {/* Title */}
+                <div>
+                  <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wide mb-2">Title</label>
+                  <h3 className="text-xl font-semibold text-gray-900">{viewingTask.title}</h3>
+                </div>
+
+                {/* Description */}
+                {viewingTask.description && (
+                  <div>
+                    <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wide mb-2">Description</label>
+                    <p className="text-gray-700 leading-relaxed whitespace-pre-wrap">{viewingTask.description}</p>
+                  </div>
+                )}
+
+                {/* Details Grid */}
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  {/* Priority */}
+                  <div className="bg-gray-50 rounded-lg p-4">
+                    <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wide mb-2">Priority</label>
+                    <div className="flex items-center gap-2">
+                      <span className={`px-3 py-1.5 rounded-lg text-sm font-semibold ${
+                        viewingTask.priority === 'High' ? 'bg-red-100 text-red-700' :
+                        viewingTask.priority === 'Medium' ? 'bg-yellow-100 text-yellow-700' :
+                        'bg-green-100 text-green-700'
+                      }`}>
+                        {viewingTask.priority}
+                      </span>
+                    </div>
+                  </div>
+
+                  {/* Status */}
+                  <div className="bg-gray-50 rounded-lg p-4">
+                    <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wide mb-2">Status</label>
+                    <div className="flex items-center gap-2">
+                      <span className={`px-3 py-1.5 rounded-lg text-sm font-semibold ${
+                        viewingTask.status === 'Completed' ? 'bg-green-100 text-green-700' :
+                        viewingTask.status === 'In Progress' ? 'bg-blue-100 text-blue-700' :
+                        'bg-gray-100 text-gray-700'
+                      }`}>
+                        {viewingTask.status}
+                      </span>
+                    </div>
+                  </div>
+
+                  {/* Due Date */}
+                  {viewingTask.dueDate && (
+                    <div className="bg-gray-50 rounded-lg p-4">
+                      <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wide mb-2">Due Date</label>
+                      <div className="flex items-center gap-2">
+                        <svg className="w-5 h-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                        </svg>
+                        <span className="text-gray-900 font-medium">
+                          {new Date(viewingTask.dueDate).toLocaleDateString('en-US', { 
+                            weekday: 'long', 
+                            year: 'numeric', 
+                            month: 'long', 
+                            day: 'numeric' 
+                          })}
+                        </span>
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Linked Application */}
+                  {viewingTask.applicationId && getApplicationName(viewingTask.applicationId) && (
+                    <div className="bg-gray-50 rounded-lg p-4">
+                      <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wide mb-2">Linked Application</label>
+                      <div className="flex items-center gap-2">
+                        <svg className="w-5 h-5 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                        </svg>
+                        <span className="text-gray-900 font-medium">{getApplicationName(viewingTask.applicationId)}</span>
+                      </div>
+                    </div>
+                  )}
+                </div>
+
+                {/* Created Date */}
+                {viewingTask.createdAt && (
+                  <div className="pt-4 border-t border-gray-200">
+                    <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wide mb-2">Created</label>
+                    <p className="text-gray-600">
+                      {new Date(viewingTask.createdAt).toLocaleDateString('en-US', { 
+                        year: 'numeric', 
+                        month: 'long', 
+                        day: 'numeric',
+                        hour: '2-digit',
+                        minute: '2-digit'
+                      })}
+                    </p>
+                  </div>
+                )}
+
+                {/* Action Buttons */}
+                <div className="flex gap-3 pt-4 border-t border-gray-200">
+                  <button
+                    onClick={() => {
+                      setViewingTask(null);
+                      setShowViewModal(false);
+                      setEditingTask(viewingTask);
+                      setFormData({
+                        title: viewingTask.title,
+                        description: viewingTask.description || '',
+                        priority: viewingTask.priority,
+                        status: viewingTask.status,
+                        dueDate: viewingTask.dueDate ? new Date(viewingTask.dueDate).toISOString().split('T')[0] : '',
+                        applicationId: viewingTask.applicationId || '',
+                      });
+                      setShowModal(true);
+                    }}
+                    className="flex-1 px-4 py-2.5 bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-700 transition-colors flex items-center justify-center gap-2"
+                  >
+                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                    </svg>
+                    Edit Task
+                  </button>
+                  <button
+                    onClick={() => {
+                      setViewingTask(null);
+                      setShowViewModal(false);
+                    }}
+                    className="px-4 py-2.5 bg-gray-100 text-gray-700 rounded-lg font-semibold hover:bg-gray-200 transition-colors"
+                  >
+                    Close
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     </AppLayout>
   );

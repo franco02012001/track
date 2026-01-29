@@ -2,19 +2,40 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
-import { oauthUrls } from '@/lib/api';
+import { useRouter } from 'next/navigation';
+import { useAuth } from '@/context/AuthContext';
 
 export default function LoginPage() {
+  const router = useRouter();
+  const { login } = useAuth();
   const [loading, setLoading] = useState<string | null>(null);
+  const [demoMode, setDemoMode] = useState(false);
 
   const handleGoogleLogin = () => {
     setLoading('google');
-    window.location.href = oauthUrls.google;
+    // Simulate OAuth login with demo user
+    setTimeout(() => {
+      login('Demo User', 'demo@example.com', 'google');
+      router.push('/');
+    }, 500);
   };
 
   const handleFacebookLogin = () => {
     setLoading('facebook');
-    window.location.href = oauthUrls.facebook;
+    // Simulate OAuth login with demo user
+    setTimeout(() => {
+      login('Demo User', 'demo@example.com', 'facebook');
+      router.push('/');
+    }, 500);
+  };
+
+  const handleDemoLogin = () => {
+    setDemoMode(true);
+    setLoading('demo');
+    setTimeout(() => {
+      login('Demo User', 'demo@example.com');
+      router.push('/');
+    }, 500);
   };
 
   return (
@@ -57,7 +78,7 @@ export default function LoginPage() {
             {/* Feature highlights */}
             <div className="space-y-4">
               {[
-                { icon: '🔐', text: 'Secure OAuth authentication' },
+                { icon: '🔐', text: 'Secure authentication' },
                 { icon: '⚡', text: 'One-click sign in' },
                 { icon: '🛡️', text: 'No password to remember' },
               ].map((item, i) => (
@@ -71,7 +92,7 @@ export default function LoginPage() {
           
           {/* Trust badges */}
           <div className="glass-card rounded-2xl p-6 max-w-md">
-            <p className="text-gray-400 text-sm mb-3">Trusted authentication powered by</p>
+            <p className="text-gray-400 text-sm mb-3">Frontend-only demo mode</p>
             <div className="flex items-center gap-6">
               <div className="flex items-center gap-2 text-gray-300">
                 <svg className="w-5 h-5" viewBox="0 0 24 24">
@@ -122,6 +143,13 @@ export default function LoginPage() {
               <p className="text-gray-400">Choose your preferred sign-in method</p>
             </div>
 
+            {/* Demo Mode Notice */}
+            <div className="mb-6 p-4 bg-yellow-500/10 border border-yellow-500/20 rounded-xl">
+              <p className="text-yellow-300 text-sm text-center">
+                🎯 Demo Mode: All data is stored locally in your browser
+              </p>
+            </div>
+
             {/* Social Buttons */}
             <div className="space-y-4">
               {/* Google Button */}
@@ -163,6 +191,22 @@ export default function LoginPage() {
                   </svg>
                 )}
                 <span>Continue with Facebook</span>
+              </button>
+
+              {/* Quick Demo Login */}
+              <button
+                onClick={handleDemoLogin}
+                disabled={loading !== null}
+                className="w-full flex items-center justify-center gap-4 py-4 px-6 bg-gradient-to-r from-violet-600 to-fuchsia-600 text-white font-semibold rounded-2xl transition-all duration-300 hover:from-violet-700 hover:to-fuchsia-700 hover:scale-[1.02] active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed shadow-lg"
+              >
+                {loading === 'demo' ? (
+                  <svg className="animate-spin h-6 w-6 text-white" fill="none" viewBox="0 0 24 24">
+                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
+                  </svg>
+                ) : (
+                  <span>Quick Demo Login</span>
+                )}
               </button>
             </div>
 

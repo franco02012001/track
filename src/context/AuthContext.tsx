@@ -9,6 +9,7 @@ interface AuthContextType {
   setToken: (token: string) => void;
   logout: () => void;
   refreshProfile: () => Promise<void>;
+  login: (name: string, email: string, provider?: string) => void;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -31,15 +32,52 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     const checkAuth = async () => {
-      const token = localStorage.getItem('token');
-      if (token) {
-        await fetchProfile();
+      // Check if user exists in localStorage
+      const storedUser = localStorage.getItem('user');
+      if (storedUser) {
+        try {
+          const userData = JSON.parse(storedUser);
+          setUser(userData);
+          // Set a mock token for compatibility
+          if (!localStorage.getItem('token')) {
+            localStorage.setItem('token', 'mock_token_' + Date.now());
+          }
+        } catch (error) {
+          console.error('Error parsing user data:', error);
+        }
+      } else {
+        // Create a default demo user
+        const defaultUser: User = {
+          id: 'default_user',
+          name: 'Demo User',
+          email: 'demo@example.com',
+          picture: undefined,
+          provider: undefined,
+          twoFactorEnabled: false,
+        };
+        localStorage.setItem('user', JSON.stringify(defaultUser));
+        localStorage.setItem('token', 'mock_token_' + Date.now());
+        setUser(defaultUser);
       }
       setLoading(false);
     };
 
     checkAuth();
-  }, [fetchProfile]);
+  }, []);
+
+  const login = useCallback((name: string, email: string, provider?: string) => {
+    const newUser: User = {
+      id: generateId(),
+      name,
+      email,
+      picture: undefined,
+      provider: provider as 'google' | 'facebook' | undefined,
+      twoFactorEnabled: false,
+    };
+    localStorage.setItem('user', JSON.stringify(newUser));
+    localStorage.setItem('token', 'mock_token_' + Date.now());
+    setUser(newUser);
+  }, []);
 
   const setToken = useCallback((token: string) => {
     localStorage.setItem('token', token);
@@ -49,6 +87,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const logout = useCallback(() => {
     localStorage.removeItem('token');
+    // Keep user data but clear session
     setUser(null);
   }, []);
 
@@ -57,10 +96,14 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }, [fetchProfile]);
 
   return (
-    <AuthContext.Provider value={{ user, loading, setToken, logout, refreshProfile }}>
+    <AuthContext.Provider value={{ user, loading, setToken, logout, refreshProfile, login }}>
       {children}
     </AuthContext.Provider>
   );
+}
+
+function generateId() {
+  return `user_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
 }
 
 export function useAuth() {

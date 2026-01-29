@@ -1,23 +1,17 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
-  // Enable static file serving for production
+  // Frontend-only mode - no backend required
   images: {
-    domains: ['localhost'],
+    domains: [],
     remotePatterns: [
-      {
-        protocol: 'https',
-        hostname: '**.railway.app',
-      },
-      {
-        protocol: 'https',
-        hostname: '**.render.com',
-      },
       {
         protocol: 'https',
         hostname: '**.vercel.app',
       },
     ],
+    // Allow unoptimized images for data URLs (handled by browser)
+    unoptimized: true,
   },
 }
 
