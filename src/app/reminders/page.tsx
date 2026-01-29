@@ -129,11 +129,11 @@ export default function RemindersPage() {
 
   return (
     <AppLayout>
-      <div className="max-w-7xl mx-auto">
-        <div className="flex items-center justify-between mb-8">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6">
+        <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between mb-6 sm:mb-8">
           <div>
-            <h1 className="text-3xl font-bold text-gray-900 mb-2">Reminders</h1>
-            <p className="text-gray-600">Set and manage important reminders</p>
+            <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-dark-text-primary mb-2">Reminders</h1>
+            <p className="text-sm sm:text-base text-gray-600 dark:text-dark-text-secondary">Set and manage important reminders</p>
           </div>
           <button
             onClick={() => {
@@ -141,7 +141,7 @@ export default function RemindersPage() {
               setEditingReminder(null);
               setShowModal(true);
             }}
-            className="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-6 py-3 rounded-lg transition shadow-sm"
+            className="w-full sm:w-auto bg-blue-600 hover:bg-blue-700 dark:bg-dark-primary dark:hover:bg-dark-primary/90 text-white font-semibold px-6 py-3 rounded-lg transition shadow-sm touch-manipulation"
           >
             + Add Reminder
           </button>
@@ -150,19 +150,19 @@ export default function RemindersPage() {
         {loading ? (
           <div className="text-center py-12 text-gray-500">Loading...</div>
         ) : reminders.length === 0 ? (
-          <div className="bg-white rounded-xl p-12 text-center shadow-sm border border-gray-200">
+          <div className="bg-white dark:bg-dark-card-bg rounded-xl p-12 text-center shadow-sm border border-gray-200">
             <svg className="w-16 h-16 text-gray-400 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
             </svg>
-            <h3 className="text-xl font-semibold text-gray-900 mb-2">No reminders yet</h3>
-            <p className="text-gray-600 mb-6">Create reminders to stay on top of important dates</p>
+            <h3 className="text-xl font-semibold text-gray-900 dark:text-dark-text-primary mb-2">No reminders yet</h3>
+            <p className="text-gray-600 dark:text-dark-text-secondary mb-6">Create reminders to stay on top of important dates</p>
             <button
               onClick={() => {
                 resetForm();
                 setEditingReminder(null);
                 setShowModal(true);
               }}
-              className="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-6 py-3 rounded-lg transition"
+              className="bg-blue-600 hover:bg-blue-700 dark:bg-dark-primary dark:hover:bg-dark-primary/90 text-white font-semibold px-6 py-3 rounded-lg transition"
             >
               + Add Reminder
             </button>
@@ -172,7 +172,7 @@ export default function RemindersPage() {
             {reminders.map((reminder) => (
               <div
                 key={reminder._id}
-                className={`bg-white rounded-xl p-6 shadow-sm border-2 transition ${
+                className={`bg-white dark:bg-dark-card-bg rounded-xl p-6 shadow-sm border-2 transition ${
                   isOverdue(reminder.dueDate || '')
                     ? 'border-red-200 bg-red-50'
                     : isToday(reminder.dueDate || '')
@@ -183,7 +183,7 @@ export default function RemindersPage() {
                 <div className="flex items-start justify-between">
                   <div className="flex-1">
                     <div className="flex items-center gap-3 mb-2">
-                      <h3 className="text-lg font-semibold text-gray-900">{reminder.title}</h3>
+                      <h3 className="text-lg font-semibold text-gray-900 dark:text-dark-text-primary">{reminder.title}</h3>
                       {isOverdue(reminder.dueDate || '') && (
                         <span className="px-2 py-1 bg-red-100 text-red-700 text-xs font-medium rounded-full">
                           Overdue
@@ -196,7 +196,7 @@ export default function RemindersPage() {
                       )}
                     </div>
                     {reminder.description && (
-                      <p className="text-gray-600 mb-3">{reminder.description}</p>
+                      <p className="text-gray-600 dark:text-dark-text-secondary mb-3">{reminder.description}</p>
                     )}
                     <div className="flex items-center gap-4 flex-wrap">
                       <div className="flex items-center gap-2">
@@ -261,12 +261,12 @@ export default function RemindersPage() {
 
         {showModal && (
           <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-            <div className="bg-white rounded-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+            <div className="bg-white dark:bg-dark-card-bg rounded-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
               <div className="p-6 border-b border-gray-200 bg-gray-50">
-                <h2 className="text-2xl font-bold text-gray-900">
+                <h2 className="text-2xl font-bold text-gray-900 dark:text-dark-text-primary">
                   {editingReminder ? 'Edit Reminder' : 'Add New Reminder'}
                 </h2>
-                <p className="text-sm text-gray-600 mt-1">Set a reminder for important dates and deadlines</p>
+                <p className="text-sm text-gray-600 dark:text-dark-text-secondary mt-1">Set a reminder for important dates and deadlines</p>
               </div>
               <form onSubmit={handleSubmit} className="p-6 space-y-6">
                 <div>
@@ -278,7 +278,7 @@ export default function RemindersPage() {
                     required
                     value={formData.title}
                     onChange={(e) => setFormData({ ...formData, title: e.target.value })}
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition text-gray-900"
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition text-gray-900 dark:text-dark-text-primary"
                     placeholder="e.g., Follow up with recruiter"
                   />
                 </div>
@@ -289,7 +289,7 @@ export default function RemindersPage() {
                     value={formData.description}
                     onChange={(e) => setFormData({ ...formData, description: e.target.value })}
                     rows={4}
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition resize-none text-gray-900"
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition resize-none text-gray-900 dark:text-dark-text-primary"
                     placeholder="Add details about this reminder..."
                   />
                 </div>
@@ -299,7 +299,7 @@ export default function RemindersPage() {
                   <select
                     value={formData.applicationId}
                     onChange={(e) => setFormData({ ...formData, applicationId: e.target.value })}
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition text-gray-900"
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition text-gray-900 dark:text-dark-text-primary"
                   >
                     <option value="">No application linked</option>
                     {applications.map((app) => (
@@ -321,7 +321,7 @@ export default function RemindersPage() {
                       required
                       value={formData.dueDate}
                       onChange={(e) => setFormData({ ...formData, dueDate: e.target.value })}
-                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition text-gray-900"
+                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition text-gray-900 dark:text-dark-text-primary"
                     />
                   </div>
                   <div>
@@ -329,7 +329,7 @@ export default function RemindersPage() {
                     <select
                       value={formData.priority}
                       onChange={(e) => setFormData({ ...formData, priority: e.target.value as Task['priority'] })}
-                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition text-gray-900"
+                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition text-gray-900 dark:text-dark-text-primary"
                     >
                       <option value="Low">Low</option>
                       <option value="Medium">Medium</option>
@@ -343,7 +343,7 @@ export default function RemindersPage() {
                   <select
                     value={formData.status}
                     onChange={(e) => setFormData({ ...formData, status: e.target.value as Task['status'] })}
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition text-gray-900"
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition text-gray-900 dark:text-dark-text-primary"
                   >
                     <option value="Pending">Pending</option>
                     <option value="In Progress">In Progress</option>
@@ -365,7 +365,7 @@ export default function RemindersPage() {
                   </button>
                   <button
                     type="submit"
-                    className="px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition font-medium shadow-sm"
+                    className="px-6 py-3 bg-blue-600 hover:bg-blue-700 dark:bg-dark-primary dark:hover:bg-dark-primary/90 text-white rounded-lg transition font-medium shadow-sm"
                   >
                     {editingReminder ? 'Update Reminder' : 'Create Reminder'}
                   </button>

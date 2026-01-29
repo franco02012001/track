@@ -369,18 +369,18 @@ export default function DocumentsPage() {
 
   return (
     <AppLayout>
-      <div className="max-w-7xl mx-auto">
-        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8">
+      <div className="max-w-7xl mx-auto w-full">
+        <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between mb-6 sm:mb-8">
           <div>
-            <h1 className="text-3xl font-bold text-gray-900 mb-2">Documents</h1>
-            <p className="text-gray-600">Manage your resumes, cover letters, and portfolios</p>
+            <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-dark-text-primary mb-1 sm:mb-2">Documents</h1>
+            <p className="text-sm sm:text-base text-gray-600 dark:text-dark-text-secondary">Manage your resumes, cover letters, and portfolios</p>
           </div>
           <button
             onClick={() => {
               resetForm();
               setShowModal(true);
             }}
-            className="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-6 py-3 rounded-lg transition shadow-sm flex items-center gap-2"
+            className="w-full sm:w-auto touch-manipulation bg-blue-600 hover:bg-blue-700 dark:bg-dark-primary dark:hover:bg-dark-primary/90 text-white font-semibold px-6 py-3 rounded-lg transition shadow-sm flex items-center gap-2"
           >
             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
@@ -395,33 +395,33 @@ export default function DocumentsPage() {
             <p className="mt-2">Loading documents...</p>
           </div>
         ) : documents.length === 0 ? (
-          <div className="bg-white rounded-xl p-12 text-center shadow-sm border border-gray-200">
+          <div className="bg-white dark:bg-dark-card-bg rounded-xl p-12 text-center shadow-sm border border-gray-200">
             <svg className="mx-auto h-16 w-16 text-gray-400 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
             </svg>
-            <h3 className="text-xl font-semibold text-gray-900 mb-2">No documents yet</h3>
-            <p className="text-gray-600 mb-6">Start by uploading your first document</p>
+            <h3 className="text-xl font-semibold text-gray-900 dark:text-dark-text-primary mb-2">No documents yet</h3>
+            <p className="text-gray-600 dark:text-dark-text-secondary mb-6">Start by uploading your first document</p>
             <button
               onClick={() => {
                 resetForm();
                 setShowModal(true);
               }}
-              className="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-6 py-3 rounded-lg transition"
+              className="bg-blue-600 hover:bg-blue-700 dark:bg-dark-primary dark:hover:bg-dark-primary/90 text-white font-semibold px-6 py-3 rounded-lg transition"
             >
               + Add Document
             </button>
           </div>
         ) : (
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
             {documents.map((doc) => (
-              <div key={doc._id} className="bg-white rounded-xl p-6 shadow-sm border border-gray-200 hover:shadow-md transition-shadow flex flex-col">
+              <div key={doc._id} className="bg-white dark:bg-dark-card-bg rounded-xl p-6 shadow-sm border border-gray-200 hover:shadow-md transition-shadow flex flex-col">
                 <div className="flex items-start gap-3 mb-4 flex-shrink-0">
                   <div className="w-12 h-12 rounded-lg bg-blue-100 flex items-center justify-center text-blue-600 flex-shrink-0">
                     {getFileIcon(doc.type)}
                   </div>
                   <div className="flex-1 min-w-0 overflow-hidden">
                     <h3 
-                      className="text-lg font-semibold text-gray-900 truncate break-words" 
+                      className="text-lg font-semibold text-gray-900 dark:text-dark-text-primary truncate break-words" 
                       title={doc.name}
                     >
                       {doc.name}
@@ -431,7 +431,7 @@ export default function DocumentsPage() {
                 </div>
                 
                 {doc.description && (
-                  <p className="text-gray-600 text-sm mb-4 line-clamp-2 break-words">{doc.description}</p>
+                  <p className="text-gray-600 dark:text-dark-text-secondary text-sm mb-4 line-clamp-2 break-words">{doc.description}</p>
                 )}
 
                 <div className="flex flex-wrap gap-2 pt-4 border-t border-gray-100 mt-auto">
@@ -502,12 +502,12 @@ export default function DocumentsPage() {
 
         {showModal && (
           <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4 overflow-y-auto">
-            <div className="bg-white rounded-xl max-w-2xl w-full my-8">
+            <div className="bg-white dark:bg-dark-card-bg rounded-xl max-w-2xl w-full my-8">
               <div className="p-6 border-b border-gray-200 bg-gradient-to-r from-blue-50 to-purple-50">
-                <h2 className="text-2xl font-bold text-gray-900">
+                <h2 className="text-2xl font-bold text-gray-900 dark:text-dark-text-primary">
                   {editingDoc ? 'Edit Document' : 'Add New Document'}
                 </h2>
-                <p className="text-sm text-gray-600 mt-1">Upload or link your professional documents</p>
+                <p className="text-sm text-gray-600 dark:text-dark-text-secondary mt-1">Upload or link your professional documents</p>
               </div>
               <form onSubmit={handleSubmit} className="p-6 space-y-6">
                 <div>
@@ -519,7 +519,7 @@ export default function DocumentsPage() {
                     required
                     value={formData.name}
                     onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition text-gray-900"
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition text-gray-900 dark:text-dark-text-primary"
                     placeholder="e.g., My Resume 2024"
                   />
                 </div>
@@ -529,7 +529,7 @@ export default function DocumentsPage() {
                   <select
                     value={formData.type}
                     onChange={(e) => setFormData({ ...formData, type: e.target.value as Document['type'] })}
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition text-gray-900"
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition text-gray-900 dark:text-dark-text-primary"
                   >
                     <option value="Resume">Resume</option>
                     <option value="Cover Letter">Cover Letter</option>
@@ -604,7 +604,7 @@ export default function DocumentsPage() {
                                   <svg className="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                                   </svg>
-                                  <span className="text-sm font-medium text-gray-900">{selectedFile.name}</span>
+                                  <span className="text-sm font-medium text-gray-900 dark:text-dark-text-primary">{selectedFile.name}</span>
                                   <span className="text-xs text-gray-500">
                                     ({(selectedFile.size / 1024 / 1024).toFixed(2)} MB)
                                   </span>
@@ -637,7 +637,7 @@ export default function DocumentsPage() {
                           required={uploadMethod === 'url'}
                           value={formData.fileUrl}
                           onChange={(e) => setFormData({ ...formData, fileUrl: e.target.value })}
-                          className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition text-gray-900"
+                          className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition text-gray-900 dark:text-dark-text-primary"
                           placeholder="https://drive.google.com/... or https://..."
                         />
                         <p className="text-xs text-gray-500 mt-1">Paste a link to your document (Google Drive, Dropbox, etc.)</p>
@@ -661,7 +661,7 @@ export default function DocumentsPage() {
                     value={formData.description}
                     onChange={(e) => setFormData({ ...formData, description: e.target.value })}
                     rows={4}
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition resize-none text-gray-900"
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition resize-none text-gray-900 dark:text-dark-text-primary"
                     placeholder="Add a description or notes about this document..."
                   />
                 </div>
@@ -680,7 +680,7 @@ export default function DocumentsPage() {
                   <button
                     type="submit"
                     disabled={uploading}
-                    className="px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition font-medium shadow-sm disabled:opacity-50 disabled:cursor-not-allowed"
+                    className="px-6 py-3 bg-blue-600 hover:bg-blue-700 dark:bg-dark-primary dark:hover:bg-dark-primary/90 text-white rounded-lg transition font-medium shadow-sm disabled:opacity-50 disabled:cursor-not-allowed"
                   >
                     {uploading ? 'Saving...' : editingDoc ? 'Update Document' : 'Add Document'}
                   </button>

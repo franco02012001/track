@@ -409,11 +409,11 @@ export default function SkillsPage() {
 
   return (
     <AppLayout>
-      <div className="max-w-7xl mx-auto">
-        <div className="flex items-center justify-between mb-8">
+      <div className="max-w-7xl mx-auto w-full">
+        <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between mb-6 sm:mb-8">
           <div>
-            <h1 className="text-3xl font-bold text-gray-900 mb-2">Skills</h1>
-            <p className="text-gray-600">Track your professional skills</p>
+            <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-1 sm:mb-2">Skills</h1>
+            <p className="text-sm sm:text-base text-gray-600 dark:text-dark-text-secondary">Track your professional skills</p>
           </div>
           <button
             onClick={() => {
@@ -421,7 +421,7 @@ export default function SkillsPage() {
               setEditingSkill(null);
               setShowModal(true);
             }}
-            className="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-6 py-3 rounded-lg transition shadow-sm"
+            className="w-full sm:w-auto bg-blue-600 hover:bg-blue-700 dark:bg-dark-primary dark:hover:bg-dark-primary/90 text-white font-semibold px-6 py-3 rounded-lg transition shadow-sm touch-manipulation"
           >
             + Add Skill
           </button>
@@ -430,7 +430,7 @@ export default function SkillsPage() {
         {loading ? (
           <div className="text-center py-12 text-gray-500">Loading...</div>
         ) : skills.length === 0 ? (
-          <div className="bg-white rounded-xl p-12 text-center shadow-sm border border-gray-200">
+          <div className="bg-white dark:bg-dark-card-bg rounded-xl p-12 text-center shadow-sm border border-gray-200 dark:border-dark-border">
             <h3 className="text-xl font-semibold text-gray-900 mb-2">No skills yet</h3>
             <button
               onClick={() => {
@@ -438,15 +438,15 @@ export default function SkillsPage() {
                 setEditingSkill(null);
                 setShowModal(true);
               }}
-              className="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-6 py-3 rounded-lg transition"
+              className="bg-blue-600 hover:bg-blue-700 dark:bg-dark-primary dark:hover:bg-dark-primary/90 text-white font-semibold px-6 py-3 rounded-lg transition"
             >
               + Add Skill
             </button>
           </div>
         ) : (
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
             {skills.map((skill) => (
-              <div key={skill._id} className="bg-white rounded-xl p-6 shadow-sm border border-gray-200">
+              <div key={skill._id} className="bg-white dark:bg-dark-card-bg rounded-xl p-4 sm:p-6 shadow-sm border border-gray-200 dark:border-dark-border">
                 <h3 className="text-lg font-semibold text-gray-900 mb-2">{skill.name}</h3>
                 <span className={`px-2 py-1 text-xs font-medium rounded-full ${
                   skill.level === 'Expert' ? 'bg-purple-50 text-purple-700' :
@@ -456,7 +456,7 @@ export default function SkillsPage() {
                 }`}>
                   {skill.level}
                 </span>
-                {skill.category && <p className="text-gray-600 text-sm mt-2">{skill.category}</p>}
+                {skill.category && <p className="text-gray-600 dark:text-dark-text-secondary text-sm mt-2">{skill.category}</p>}
                 <div className="flex gap-2 mt-4">
                   <button
                     onClick={() => {
@@ -487,12 +487,12 @@ export default function SkillsPage() {
 
         {showModal && (
           <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-            <div className="bg-white rounded-xl max-w-2xl w-full">
+            <div className="bg-white dark:bg-dark-card-bg rounded-xl max-w-2xl w-full">
               <div className="p-6 border-b border-gray-200 bg-gray-50">
                 <h2 className="text-2xl font-bold text-gray-900">
                   {editingSkill ? 'Edit Skill' : 'Add New Skill'}
                 </h2>
-                <p className="text-sm text-gray-600 mt-1">Track your professional skills and expertise</p>
+                <p className="text-sm text-gray-600 dark:text-dark-text-secondary mt-1">Track your professional skills and expertise</p>
               </div>
               <form onSubmit={handleSubmit} className="p-6 space-y-6">
                 <div>
@@ -536,11 +536,11 @@ export default function SkillsPage() {
                 </div>
 
                 {/* Quick add from high-demand categories */}
-                <div className="border border-gray-200 rounded-lg p-4 bg-gray-50">
+                <div className="border border-gray-200 dark:border-dark-border rounded-lg p-4 bg-gray-50">
                   <div className="flex items-center justify-between mb-3">
                     <div>
                       <p className="text-sm font-semibold text-gray-800">Quick add from high-demand skills</p>
-                      <p className="text-xs text-gray-600">
+                      <p className="text-xs text-gray-600 dark:text-dark-text-secondary">
                         Choose a category and skill to auto-fill the form.
                       </p>
                     </div>
@@ -632,7 +632,7 @@ export default function SkillsPage() {
                   </button>
                   <button
                     type="submit"
-                    className="px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition font-medium shadow-sm"
+                    className="px-6 py-3 bg-blue-600 hover:bg-blue-700 dark:bg-dark-primary dark:hover:bg-dark-primary/90 text-white rounded-lg transition font-medium shadow-sm"
                   >
                     {editingSkill ? 'Update Skill' : 'Add Skill'}
                   </button>

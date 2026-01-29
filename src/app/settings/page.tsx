@@ -169,11 +169,11 @@ export default function SettingsPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-slate-50 via-white to-slate-100">
+    <div className="min-h-screen bg-gradient-to-b from-slate-50 via-white to-slate-100 dark:from-slate-900 dark:via-slate-800 dark:to-slate-900">
       {/* Main Content (no sidebar) */}
       <main className="max-w-6xl mx-auto px-4 pb-12">
         {/* Top Header */}
-        <header className="sticky top-0 z-30 backdrop-blur bg-white/80 border-b border-slate-200">
+        <header className="sticky top-0 z-30 backdrop-blur bg-white/80 dark:bg-dark-sidebar-bg/80 border-b border-slate-200 dark:border-dark-border">
           <div className="flex items-center justify-between px-4 sm:px-6 py-4">
             <div className="flex items-center gap-4">
               <div className="relative">
@@ -192,11 +192,11 @@ export default function SettingsPage() {
                 </div>
               </div>
               <div>
-                <p className="text-sm font-medium text-slate-500 uppercase tracking-wide">Profile Settings</p>
-                <p className="text-lg font-semibold text-slate-900">
+                <p className="text-sm font-medium text-slate-500 dark:text-dark-text-secondary uppercase tracking-wide">Profile Settings</p>
+                <p className="text-lg font-semibold text-slate-900 dark:text-dark-text-primary">
                   {user?.name || 'Your account'}
                 </p>
-                <p className="text-xs text-slate-500 hidden sm:block">
+                <p className="text-xs text-slate-500 dark:text-dark-text-secondary hidden sm:block">
                   Update your personal information, security and account preferences.
                 </p>
               </div>
@@ -204,7 +204,7 @@ export default function SettingsPage() {
             
             <button
               onClick={() => router.push('/')}
-              className="hidden sm:inline-flex items-center gap-2 text-sm font-medium text-slate-600 hover:text-slate-900 px-4 py-2 rounded-lg hover:bg-slate-100 border border-slate-200 transition"
+              className="hidden sm:inline-flex items-center gap-2 text-sm font-medium text-slate-600 dark:text-dark-text-secondary hover:text-slate-900 dark:hover:text-slate-100 px-4 py-2 rounded-lg hover:bg-slate-100 dark:hover:bg-dark-hover border border-slate-200 dark:border-dark-border transition"
             >
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
@@ -253,9 +253,9 @@ export default function SettingsPage() {
 
             {/* Profile Tab */}
             {activeTab === 'profile' && (
-              <div className="bg-white/90 backdrop-blur rounded-2xl p-6 sm:p-8 shadow-sm border border-slate-200">
-                <h2 className="text-xl font-semibold text-slate-900 mb-2">Profile information</h2>
-                <p className="text-sm text-slate-500 mb-6">
+              <div className="bg-white/90 dark:bg-dark-card-bg/90 backdrop-blur rounded-2xl p-6 sm:p-8 shadow-sm border border-slate-200 dark:border-dark-border">
+                <h2 className="text-xl font-semibold text-slate-900 dark:text-dark-text-primary mb-2">Profile information</h2>
+                <p className="text-sm text-slate-500 dark:text-dark-text-secondary mb-6">
                   Keep your personal details up to date. This information is used across your Tracker workspace.
                 </p>
                 
@@ -298,7 +298,7 @@ export default function SettingsPage() {
                             type="button"
                             onClick={handleUploadPicture}
                             disabled={loading}
-                            className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition text-sm font-medium disabled:opacity-50 disabled:cursor-not-allowed shadow-sm"
+                            className="px-4 py-2 bg-blue-600 hover:bg-blue-700 dark:bg-dark-primary dark:hover:bg-dark-primary/90 text-white rounded-lg transition text-sm font-medium disabled:opacity-50 disabled:cursor-not-allowed shadow-sm"
                           >
                             {loading ? 'Uploading...' : 'Save Photo'}
                           </button>
@@ -392,7 +392,7 @@ export default function SettingsPage() {
                     <button
                       type="submit"
                       disabled={saving}
-                      className="px-5 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition text-sm font-medium disabled:opacity-50 disabled:cursor-not-allowed shadow-sm"
+                      className="px-5 py-2 bg-blue-600 hover:bg-blue-700 dark:bg-dark-primary dark:hover:bg-dark-primary/90 text-white rounded-lg transition text-sm font-medium disabled:opacity-50 disabled:cursor-not-allowed shadow-sm"
                     >
                       {saving ? 'Saving...' : 'Save changes'}
                     </button>
@@ -403,9 +403,9 @@ export default function SettingsPage() {
 
             {/* Account Tab */}
             {activeTab === 'account' && (
-              <div className="bg-white/90 backdrop-blur rounded-2xl p-6 sm:p-8 shadow-sm border border-slate-200">
-                <h2 className="text-xl font-semibold text-slate-900 mb-2">Account settings</h2>
-                <p className="text-sm text-slate-500 mb-6">
+              <div className="bg-white/90 dark:bg-dark-card-bg/90 backdrop-blur rounded-2xl p-6 sm:p-8 shadow-sm border border-slate-200 dark:border-dark-border">
+                <h2 className="text-xl font-semibold text-slate-900 dark:text-dark-text-primary mb-2">Account settings</h2>
+                <p className="text-sm text-slate-500 dark:text-dark-text-secondary mb-6">
                   Manage your account lifecycle and data retention preferences.
                 </p>
                 
@@ -455,9 +455,9 @@ export default function SettingsPage() {
 
             {/* Security Tab */}
             {activeTab === 'security' && (
-              <div className="bg-white/90 backdrop-blur rounded-2xl p-6 sm:p-8 shadow-sm border border-slate-200">
-                <h2 className="text-xl font-semibold text-slate-900 mb-2">Security settings</h2>
-                <p className="text-sm text-slate-500 mb-6">
+              <div className="bg-white/90 dark:bg-dark-card-bg/90 backdrop-blur rounded-2xl p-6 sm:p-8 shadow-sm border border-slate-200 dark:border-dark-border">
+                <h2 className="text-xl font-semibold text-slate-900 dark:text-dark-text-primary mb-2">Security settings</h2>
+                <p className="text-sm text-slate-500 dark:text-dark-text-secondary mb-6">
                   Strengthen your account protection with two-factor authentication and session monitoring.
                 </p>
                 
@@ -465,8 +465,8 @@ export default function SettingsPage() {
                   <div>
                     <div className="flex items-center justify-between mb-2">
                       <div>
-                        <h3 className="text-lg font-semibold text-slate-900">Two-factor authentication</h3>
-                        <p className="text-slate-600 text-sm mt-1">
+                        <h3 className="text-lg font-semibold text-slate-900 dark:text-dark-text-primary">Two-factor authentication</h3>
+                        <p className="text-slate-600 dark:text-dark-text-secondary text-sm mt-1">
                           Add an extra layer of security to your account by enabling two-factor authentication.
                         </p>
                       </div>
@@ -478,26 +478,26 @@ export default function SettingsPage() {
                           disabled={loading}
                           className="sr-only peer"
                         />
-                        <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
+                        <div className="w-11 h-6 bg-gray-200 dark:bg-gray-700 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600 dark:peer-checked:bg-blue-500"></div>
                       </label>
                     </div>
-                    <div className="mt-4 p-4 bg-slate-50 rounded-lg border border-slate-100">
-                      <p className="text-sm text-slate-600">
+                    <div className="mt-4 p-4 bg-slate-50 dark:bg-dark-hover rounded-lg border border-slate-100 dark:border-dark-border">
+                      <p className="text-sm text-slate-600 dark:text-dark-text-secondary">
                         {twoFactorEnabled ? (
-                          <span className="text-green-600 font-medium">✓ Two-factor authentication is enabled for your account.</span>
+                          <span className="text-green-600 dark:text-green-400 font-medium">✓ Two-factor authentication is enabled for your account.</span>
                         ) : (
-                          <span className="text-slate-600">Two-factor authentication is currently disabled.</span>
+                          <span>Two-factor authentication is currently disabled.</span>
                         )}
                       </p>
                     </div>
                   </div>
 
-                  <div className="border-t border-gray-200 pt-6">
-                    <h3 className="text-lg font-semibold text-slate-900 mb-2">Active sessions</h3>
-                    <p className="text-slate-600 text-sm mb-4">
+                  <div className="border-t border-gray-200 dark:border-dark-border pt-6">
+                    <h3 className="text-lg font-semibold text-slate-900 dark:text-dark-text-primary mb-2">Active sessions</h3>
+                    <p className="text-slate-600 dark:text-dark-text-secondary text-sm mb-4">
                       Manage and monitor your active sessions across different devices.
                     </p>
-                    <button className="px-4 py-2 border border-slate-200 text-slate-700 rounded-lg hover:bg-slate-50 transition text-sm font-medium shadow-sm">
+                    <button className="px-4 py-2 border border-slate-200 dark:border-dark-border text-slate-700 dark:text-dark-text-secondary rounded-lg hover:bg-slate-50 dark:hover:bg-dark-hover transition text-sm font-medium shadow-sm">
                       View active sessions
                     </button>
                   </div>

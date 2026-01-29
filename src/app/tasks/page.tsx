@@ -195,41 +195,41 @@ export default function TasksPage() {
 
   return (
     <AppLayout>
-      <div className="max-w-7xl mx-auto">
-        <div className="mb-6">
-          <div className="flex items-center justify-between mb-6">
+      <div className="max-w-7xl mx-auto w-full">
+        <div className="mb-4 sm:mb-6">
+          <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between mb-4 sm:mb-6">
             <div>
-              <h1 className="text-3xl font-bold text-gray-900 mb-2">Tasks</h1>
-              <p className="text-gray-600">Manage your tasks and reminders</p>
+              <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-dark-text-primary mb-1 sm:mb-2">Tasks</h1>
+              <p className="text-sm sm:text-base text-gray-600 dark:text-dark-text-secondary">Manage your tasks and reminders</p>
             </div>
-            <div className="flex items-center gap-4">
+            <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 sm:gap-4">
               {/* View Toggle */}
-              <div className="inline-flex rounded-lg bg-gray-100 p-1 border border-gray-200">
+              <div className="inline-flex rounded-lg bg-gray-100 p-1 border border-gray-200 self-start sm:self-center">
                 <button
                   onClick={() => setViewMode('list')}
-                  className={`px-4 py-2 text-sm font-medium rounded-md transition ${
+                  className={`px-4 py-2 text-sm font-medium rounded-md transition flex items-center ${
                     viewMode === 'list'
-                      ? 'bg-white text-gray-900 shadow-sm'
-                      : 'text-gray-600 hover:text-gray-900'
+                      ? 'bg-white shadow-sm dark:bg-dark-primary'
+                      : 'hover:bg-white/80 dark:hover:bg-dark-hover text-gray-600 dark:text-blue-400'
                   }`}
                 >
-                  <svg className="w-4 h-4 inline mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <svg className={`w-4 h-4 inline mr-1.5 ${viewMode === 'list' ? 'text-blue-600 dark:text-white' : 'text-blue-600 dark:text-blue-400'}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
                   </svg>
-                  List
+                  <span className={viewMode === 'list' ? 'text-gray-900 dark:text-white' : 'text-gray-600 dark:text-blue-400'}>List</span>
                 </button>
                 <button
                   onClick={() => setViewMode('kanban')}
-                  className={`px-4 py-2 text-sm font-medium rounded-md transition ${
+                  className={`px-4 py-2 text-sm font-medium rounded-md transition flex items-center ${
                     viewMode === 'kanban'
-                      ? 'bg-white text-gray-900 shadow-sm'
-                      : 'text-gray-600 hover:text-gray-900'
+                      ? 'bg-white shadow-sm dark:bg-dark-primary'
+                      : 'hover:bg-white/80 dark:hover:bg-dark-hover text-gray-600 dark:text-blue-400'
                   }`}
                 >
-                  <svg className="w-4 h-4 inline mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <svg className={`w-4 h-4 inline mr-1.5 ${viewMode === 'kanban' ? 'text-blue-600 dark:text-white' : 'text-blue-600 dark:text-blue-400'}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 17V7m0 10a2 2 0 01-2 2H5a2 2 0 01-2-2V7a2 2 0 012-2h2a2 2 0 012 2m0 10a2 2 0 002 2h2a2 2 0 002-2M9 7a2 2 0 012-2h2a2 2 0 012 2m0 10V7m0 10a2 2 0 002 2h2a2 2 0 002-2V7a2 2 0 00-2-2h-2a2 2 0 00-2 2" />
                   </svg>
-                  Kanban
+                  <span className={viewMode === 'kanban' ? 'text-gray-900 dark:text-white' : 'text-gray-600 dark:text-blue-400'}>Kanban</span>
                 </button>
               </div>
               <button
@@ -238,7 +238,7 @@ export default function TasksPage() {
                   setEditingTask(null);
                   setShowModal(true);
                 }}
-                className="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-6 py-3 rounded-lg transition shadow-sm"
+                className="w-full sm:w-auto bg-blue-600 hover:bg-blue-700 dark:bg-dark-primary dark:hover:bg-dark-primary/90 text-white font-semibold px-6 py-3 rounded-lg transition shadow-sm touch-manipulation"
               >
                 + Add Task
               </button>
@@ -249,16 +249,16 @@ export default function TasksPage() {
         {loading ? (
           <div className="text-center py-12 text-gray-500">Loading...</div>
         ) : tasks.length === 0 ? (
-          <div className="bg-white rounded-xl p-12 text-center shadow-sm border border-gray-200">
-            <h3 className="text-xl font-semibold text-gray-900 mb-2">No tasks yet</h3>
-            <p className="text-gray-600 mb-6">Get started by adding your first task</p>
+          <div className="bg-white dark:bg-dark-card-bg rounded-xl p-12 text-center shadow-sm border border-gray-200">
+            <h3 className="text-xl font-semibold text-gray-900 dark:text-dark-text-primary mb-2">No tasks yet</h3>
+            <p className="text-gray-600 dark:text-dark-text-secondary mb-6">Get started by adding your first task</p>
             <button
               onClick={() => {
                 resetForm();
                 setEditingTask(null);
                 setShowModal(true);
               }}
-              className="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-6 py-3 rounded-lg transition"
+              className="bg-blue-600 hover:bg-blue-700 dark:bg-dark-primary dark:hover:bg-dark-primary/90 text-white font-semibold px-6 py-3 rounded-lg transition"
             >
               + Add Task
             </button>
@@ -276,9 +276,9 @@ export default function TasksPage() {
                     onDragOver={handleDragOver}
                     onDrop={(e) => handleDrop(e, column.id as Task['status'])}
                   >
-                    <div className="bg-gray-50 rounded-lg p-4 border border-gray-200">
+                    <div className="bg-gray-50 dark:bg-dark-card-bg/50 rounded-lg p-4 border border-gray-200 dark:border-dark-border">
                       <div className="flex items-center justify-between mb-3">
-                        <h3 className="text-sm font-semibold text-gray-900 flex items-center gap-2">
+                        <h3 className="text-sm font-semibold text-gray-900 dark:text-dark-text-primary flex items-center gap-2">
                           <span className={`w-2 h-2 rounded-full ${
                             column.id === 'Completed' ? 'bg-green-500' :
                             column.id === 'In Progress' ? 'bg-blue-500' :
@@ -300,9 +300,9 @@ export default function TasksPage() {
                           >
                             <div className="flex items-start justify-between mb-2">
                               <div className="flex-1 min-w-0">
-                                <h4 className="text-sm font-semibold text-gray-900 truncate">{task.title}</h4>
+                                <h4 className="text-sm font-semibold text-gray-900 dark:text-dark-text-primary truncate">{task.title}</h4>
                                 {task.description && (
-                                  <p className="text-xs text-gray-600 mt-0.5 line-clamp-2">{task.description}</p>
+                                  <p className="text-xs text-gray-600 dark:text-dark-text-secondary mt-0.5 line-clamp-2">{task.description}</p>
                                 )}
                               </div>
                               <div className="flex gap-1 ml-2">
@@ -312,7 +312,7 @@ export default function TasksPage() {
                                     setViewingTask(task);
                                     setShowViewModal(true);
                                   }}
-                                  className="p-1 text-gray-400 hover:text-gray-600 transition"
+                                  className="p-1 text-gray-400 hover:text-gray-600 dark:text-dark-text-secondary transition"
                                   title="View"
                                 >
                                   <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -386,10 +386,10 @@ export default function TasksPage() {
           /* List View */
           <div className="grid gap-4">
             {tasks.map((task) => (
-              <div key={task._id} className="bg-white rounded-xl p-6 shadow-sm border border-gray-200">
+              <div key={task._id} className="bg-white dark:bg-dark-card-bg rounded-xl p-6 shadow-sm border border-gray-200">
                 <div className="flex items-start justify-between">
                   <div className="flex-1">
-                    <h3 className="text-lg font-semibold text-gray-900 mb-2">{task.title}</h3>
+                    <h3 className="text-lg font-semibold text-gray-900 dark:text-dark-text-primary mb-2">{task.title}</h3>
                     {task.applicationId && getApplicationName(task.applicationId) && (
                       <div className="mb-2">
                         <span className="text-xs text-blue-600 bg-blue-50 px-2 py-1 rounded-full inline-flex items-center gap-1">
@@ -400,7 +400,7 @@ export default function TasksPage() {
                         </span>
                       </div>
                     )}
-                    {task.description && <p className="text-gray-600 mb-3">{task.description}</p>}
+                    {task.description && <p className="text-gray-600 dark:text-dark-text-secondary mb-3">{task.description}</p>}
                     <div className="flex items-center gap-4">
                       <span className={`px-2 py-1 text-xs font-medium rounded-full ${
                         task.priority === 'High' ? 'bg-red-50 text-red-700' :
@@ -456,12 +456,12 @@ export default function TasksPage() {
 
         {showModal && (
           <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-            <div className="bg-white rounded-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+            <div className="bg-white dark:bg-dark-card-bg rounded-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
               <div className="p-6 border-b border-gray-200 bg-gray-50">
-                <h2 className="text-2xl font-bold text-gray-900">
+                <h2 className="text-2xl font-bold text-gray-900 dark:text-dark-text-primary">
                   {editingTask ? 'Edit Task' : 'Add New Task'}
                 </h2>
-                <p className="text-sm text-gray-600 mt-1">Create a task to track your job search activities</p>
+                <p className="text-sm text-gray-600 dark:text-dark-text-secondary mt-1">Create a task to track your job search activities</p>
               </div>
               <form onSubmit={handleSubmit} className="p-6 space-y-6">
                 <div>
@@ -473,7 +473,7 @@ export default function TasksPage() {
                     required
                     value={formData.title}
                     onChange={(e) => setFormData({ ...formData, title: e.target.value })}
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition text-gray-900"
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition text-gray-900 dark:text-dark-text-primary"
                     placeholder="e.g., Follow up with recruiter"
                   />
                 </div>
@@ -484,7 +484,7 @@ export default function TasksPage() {
                     value={formData.description}
                     onChange={(e) => setFormData({ ...formData, description: e.target.value })}
                     rows={4}
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition resize-none text-gray-900"
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition resize-none text-gray-900 dark:text-dark-text-primary"
                     placeholder="Add details about this task..."
                   />
                 </div>
@@ -494,7 +494,7 @@ export default function TasksPage() {
                   <select
                     value={formData.applicationId}
                     onChange={(e) => setFormData({ ...formData, applicationId: e.target.value })}
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition text-gray-900"
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition text-gray-900 dark:text-dark-text-primary"
                   >
                     <option value="">No application linked</option>
                     {applications.map((app) => (
@@ -512,7 +512,7 @@ export default function TasksPage() {
                     <select
                       value={formData.priority}
                       onChange={(e) => setFormData({ ...formData, priority: e.target.value as Task['priority'] })}
-                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition text-gray-900"
+                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition text-gray-900 dark:text-dark-text-primary"
                     >
                       <option value="Low">Low</option>
                       <option value="Medium">Medium</option>
@@ -524,7 +524,7 @@ export default function TasksPage() {
                     <select
                       value={formData.status}
                       onChange={(e) => setFormData({ ...formData, status: e.target.value as Task['status'] })}
-                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition text-gray-900"
+                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition text-gray-900 dark:text-dark-text-primary"
                     >
                       <option value="Pending">Pending</option>
                       <option value="In Progress">In Progress</option>
@@ -539,7 +539,7 @@ export default function TasksPage() {
                     type="date"
                     value={formData.dueDate}
                     onChange={(e) => setFormData({ ...formData, dueDate: e.target.value })}
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition text-gray-900"
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition text-gray-900 dark:text-dark-text-primary"
                   />
                 </div>
 
@@ -557,7 +557,7 @@ export default function TasksPage() {
                   </button>
                   <button
                     type="submit"
-                    className="px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition font-medium shadow-sm"
+                    className="px-6 py-3 bg-blue-600 hover:bg-blue-700 dark:bg-dark-primary dark:hover:bg-dark-primary/90 text-white rounded-lg transition font-medium shadow-sm"
                   >
                     {editingTask ? 'Update Task' : 'Create Task'}
                   </button>
@@ -591,7 +591,7 @@ export default function TasksPage() {
         {/* View Task Modal */}
         {viewingTask && (
           <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-            <div className="bg-white rounded-xl max-w-3xl w-full max-h-[90vh] overflow-y-auto shadow-2xl">
+            <div className="bg-white dark:bg-dark-card-bg rounded-xl max-w-3xl w-full max-h-[90vh] overflow-y-auto shadow-2xl">
               <div className="p-6 border-b border-gray-200 bg-gradient-to-r from-blue-50 to-indigo-50">
                 <div className="flex items-center gap-3">
                   <div className="w-12 h-12 rounded-lg bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center">
@@ -600,8 +600,8 @@ export default function TasksPage() {
                     </svg>
                   </div>
                   <div>
-                    <h2 className="text-2xl font-bold text-gray-900">Task Details</h2>
-                    <p className="text-sm text-gray-600 mt-1">View complete task information</p>
+                    <h2 className="text-2xl font-bold text-gray-900 dark:text-dark-text-primary">Task Details</h2>
+                    <p className="text-sm text-gray-600 dark:text-dark-text-secondary mt-1">View complete task information</p>
                   </div>
                 </div>
               </div>
@@ -610,7 +610,7 @@ export default function TasksPage() {
                 {/* Title */}
                 <div>
                   <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wide mb-2">Title</label>
-                  <h3 className="text-xl font-semibold text-gray-900">{viewingTask.title}</h3>
+                  <h3 className="text-xl font-semibold text-gray-900 dark:text-dark-text-primary">{viewingTask.title}</h3>
                 </div>
 
                 {/* Description */}
@@ -659,7 +659,7 @@ export default function TasksPage() {
                         <svg className="w-5 h-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
                         </svg>
-                        <span className="text-gray-900 font-medium">
+                        <span className="text-gray-900 dark:text-dark-text-primary font-medium">
                           {new Date(viewingTask.dueDate).toLocaleDateString('en-US', { 
                             weekday: 'long', 
                             year: 'numeric', 
@@ -679,7 +679,7 @@ export default function TasksPage() {
                         <svg className="w-5 h-5 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
                         </svg>
-                        <span className="text-gray-900 font-medium">{getApplicationName(viewingTask.applicationId)}</span>
+                        <span className="text-gray-900 dark:text-dark-text-primary font-medium">{getApplicationName(viewingTask.applicationId)}</span>
                       </div>
                     </div>
                   )}
@@ -689,7 +689,7 @@ export default function TasksPage() {
                 {viewingTask.createdAt && (
                   <div className="pt-4 border-t border-gray-200">
                     <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wide mb-2">Created</label>
-                    <p className="text-gray-600">
+                    <p className="text-gray-600 dark:text-dark-text-secondary">
                       {new Date(viewingTask.createdAt).toLocaleDateString('en-US', { 
                         year: 'numeric', 
                         month: 'long', 

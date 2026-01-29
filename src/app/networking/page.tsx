@@ -166,11 +166,11 @@ export default function NetworkingPage() {
 
   return (
     <AppLayout>
-      <div className="max-w-7xl mx-auto">
-        <div className="flex items-center justify-between mb-8">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6">
+        <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between mb-6 sm:mb-8">
           <div>
-            <h1 className="text-3xl font-bold text-gray-900 mb-2">Networking</h1>
-            <p className="text-gray-600">Build and manage your professional network</p>
+            <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-2">Networking</h1>
+            <p className="text-sm sm:text-base text-gray-600 dark:text-dark-text-secondary">Build and manage your professional network</p>
           </div>
           <button
             onClick={() => {
@@ -178,7 +178,7 @@ export default function NetworkingPage() {
               setEditingContact(null);
               setShowModal(true);
             }}
-            className="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-6 py-3 rounded-lg transition shadow-sm"
+            className="w-full sm:w-auto bg-blue-600 hover:bg-blue-700 dark:bg-dark-primary dark:hover:bg-dark-primary/90 text-white font-semibold px-6 py-3 rounded-lg transition shadow-sm touch-manipulation"
           >
             + Add Connection
           </button>
@@ -187,16 +187,16 @@ export default function NetworkingPage() {
         {loading ? (
           <div className="text-center py-12 text-gray-500">Loading...</div>
         ) : contacts.length === 0 ? (
-          <div className="bg-white rounded-xl p-12 text-center shadow-sm border border-gray-200">
+          <div className="bg-white dark:bg-dark-card-bg rounded-xl p-12 text-center shadow-sm border border-gray-200 dark:border-dark-border">
             <h3 className="text-xl font-semibold text-gray-900 mb-2">No connections yet</h3>
-            <p className="text-gray-600 mb-6">Start building your professional network</p>
+            <p className="text-gray-600 dark:text-dark-text-secondary mb-6">Start building your professional network</p>
             <button
               onClick={() => {
                 resetForm();
                 setEditingContact(null);
                 setShowModal(true);
               }}
-              className="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-6 py-3 rounded-lg transition"
+              className="bg-blue-600 hover:bg-blue-700 dark:bg-dark-primary dark:hover:bg-dark-primary/90 text-white font-semibold px-6 py-3 rounded-lg transition"
             >
               + Add Connection
             </button>
@@ -204,7 +204,7 @@ export default function NetworkingPage() {
         ) : (
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
             {contacts.map((contact) => (
-              <div key={contact._id} className="bg-white rounded-xl p-6 shadow-sm border border-gray-200 hover:shadow-md transition">
+              <div key={contact._id} className="bg-white dark:bg-dark-card-bg rounded-xl p-6 shadow-sm border border-gray-200 dark:border-dark-border hover:shadow-md transition">
                 <div className="flex items-start justify-between mb-4">
                   <div className="w-12 h-12 rounded-full bg-blue-100 flex items-center justify-center flex-shrink-0">
                     <span className="text-blue-600 font-semibold text-lg">
@@ -239,11 +239,11 @@ export default function NetworkingPage() {
                   </div>
                 </div>
                 <h3 className="text-lg font-semibold text-gray-900 mb-1">{contact.name}</h3>
-                {contact.position && <p className="text-gray-600 text-sm mb-1">{contact.position}</p>}
+                {contact.position && <p className="text-gray-600 dark:text-dark-text-secondary text-sm mb-1">{contact.position}</p>}
                 {contact.company && <p className="text-gray-500 text-sm mb-3">{contact.company}</p>}
                 <div className="space-y-1 text-sm">
                   {contact.email && (
-                    <div className="flex items-center gap-2 text-gray-600">
+                    <div className="flex items-center gap-2 text-gray-600 dark:text-dark-text-secondary">
                       <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
                       </svg>
@@ -251,7 +251,7 @@ export default function NetworkingPage() {
                     </div>
                   )}
                   {contact.phone && (
-                    <div className="flex items-center gap-2 text-gray-600">
+                    <div className="flex items-center gap-2 text-gray-600 dark:text-dark-text-secondary">
                       <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
                       </svg>
@@ -279,7 +279,7 @@ export default function NetworkingPage() {
 
         {showModal && (
           <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4 backdrop-blur-sm">
-            <div className="bg-white rounded-2xl max-w-3xl w-full max-h-[90vh] overflow-y-auto shadow-2xl border border-gray-200">
+            <div className="bg-white rounded-2xl max-w-3xl w-full max-h-[90vh] overflow-y-auto shadow-2xl border border-gray-200 dark:border-dark-border">
               <div className="p-6 border-b border-gray-200 bg-gradient-to-r from-blue-50 to-indigo-50">
                 <div className="flex items-center gap-3 mb-2">
                   <div className="w-10 h-10 rounded-lg bg-blue-600 flex items-center justify-center">
@@ -291,7 +291,7 @@ export default function NetworkingPage() {
                     <h2 className="text-2xl font-bold text-gray-900">
                       {editingContact ? 'Edit Connection' : 'Add New Connection'}
                     </h2>
-                    <p className="text-sm text-gray-600 mt-0.5">
+                    <p className="text-sm text-gray-600 dark:text-dark-text-secondary mt-0.5">
                       {editingContact ? 'Update contact information' : 'Add a professional contact to your network'}
                     </p>
                   </div>
@@ -468,7 +468,7 @@ export default function NetworkingPage() {
                   </button>
                   <button
                     type="submit"
-                    className="px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition font-medium shadow-sm text-sm flex items-center gap-2"
+                    className="px-6 py-3 bg-blue-600 hover:bg-blue-700 dark:bg-dark-primary dark:hover:bg-dark-primary/90 text-white rounded-lg transition font-medium shadow-sm text-sm flex items-center gap-2"
                   >
                     {editingContact ? (
                       <>

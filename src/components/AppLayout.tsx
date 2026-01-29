@@ -85,6 +85,7 @@ export default function AppLayout({ children }: AppLayoutProps) {
   const router = useRouter();
   const pathname = usePathname();
   const [sidebarOpen, setSidebarOpen] = useState(true);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [profileMenuOpen, setProfileMenuOpen] = useState(false);
   const profileMenuRef = useRef<HTMLDivElement>(null);
 
@@ -102,6 +103,23 @@ export default function AppLayout({ children }: AppLayoutProps) {
     };
   }, []);
 
+  // Close mobile menu on route change
+  useEffect(() => {
+    setMobileMenuOpen(false);
+  }, [pathname]);
+
+  // Prevent body scroll when mobile menu is open
+  useEffect(() => {
+    if (mobileMenuOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, [mobileMenuOpen]);
+
   const handleLogout = () => {
     logout();
     router.push('/');
@@ -113,50 +131,79 @@ export default function AppLayout({ children }: AppLayoutProps) {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 flex">
-      {/* Sidebar */}
-      <aside className={`fixed left-0 top-0 h-full z-40 transition-all duration-300 bg-white ${sidebarOpen ? 'w-64' : 'w-20'} shadow-sm`}>
+    <div className="min-h-screen bg-gray-50 dark:bg-dark-app-bg flex">
+      {/* Mobile overlay when sidebar open */}
+      {mobileMenuOpen && (
+        <div
+          className="fixed inset-0 bg-black/50 z-30 md:hidden"
+          onClick={() => setMobileMenuOpen(false)}
+          aria-hidden="true"
+        />
+      )}
+
+      {/* Sidebar - drawer on mobile, fixed on desktop */}
+      <aside
+        className={`fixed left-0 top-0 h-full z-40 transition-all duration-300 bg-white dark:bg-dark-sidebar-bg shadow-sm w-64
+          ${mobileMenuOpen ? 'translate-x-0' : '-translate-x-full'}
+          md:translate-x-0
+          ${sidebarOpen ? 'md:w-64' : 'md:w-20'}
+        `}
+      >
         <div className="h-full flex flex-col">
           {/* Logo Section */}
-          <div className="p-6 flex items-center justify-between border-b border-gray-100">
-            <div className="flex items-center gap-3">
+          <div className="p-4 sm:p-6 flex items-center justify-between border-b border-gray-100 dark:border-dark-border">
+            <div className="flex items-center gap-3 min-w-0">
               <div className="w-8 h-8 rounded-lg bg-blue-600 flex items-center justify-center flex-shrink-0">
                 <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
                 </svg>
               </div>
-              {sidebarOpen && <span className="text-lg font-bold text-gray-900">Tracker</span>}
+              {(sidebarOpen || mobileMenuOpen) && <span className="text-lg font-bold text-gray-900 dark:text-dark-text-primary truncate">Tracker</span>}
             </div>
-            {sidebarOpen && (
-              <button
-                onClick={() => setSidebarOpen(false)}
-                className="p-1 hover:bg-gray-100 rounded transition"
-              >
-                <svg className="w-5 h-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                </svg>
-              </button>
-            )}
+            <div className="flex items-center gap-1">
+              {mobileMenuOpen && (
+                <button
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="p-2 hover:bg-gray-100 dark:hover:bg-dark-hover rounded-lg transition touch-manipulation md:hidden"
+                  aria-label="Close menu"
+                >
+                  <svg className="w-5 h-5 text-gray-500 dark:text-dark-text-secondary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                  </svg>
+                </button>
+              )}
+              {sidebarOpen && !mobileMenuOpen && (
+                <button
+                  onClick={() => setSidebarOpen(false)}
+                  className="p-1 hover:bg-gray-100 dark:hover:bg-dark-hover rounded transition hidden md:block"
+                  aria-label="Collapse sidebar"
+                >
+                  <svg className="w-5 h-5 text-gray-500 dark:text-dark-text-secondary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                  </svg>
+                </button>
+              )}
+            </div>
           </div>
 
           {/* Navigation */}
-          <nav className="flex-1 px-4 py-6 space-y-1 overflow-y-auto">
+          <nav className="flex-1 px-3 sm:px-4 py-4 sm:py-6 space-y-1 overflow-y-auto overflow-x-hidden">
             {menuItems.map((item, index) => {
               const isActive = pathname === item.path;
               return (
                 <button
                   key={index}
                   onClick={() => router.push(item.path)}
-                  className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-lg transition-all ${
+                  className={`w-full flex items-center gap-3 px-3 py-3 sm:py-2.5 rounded-lg transition-all min-h-[44px] touch-manipulation ${
                     isActive
-                      ? 'bg-blue-600 text-white shadow-sm'
-                      : 'text-gray-700 hover:bg-gray-100'
+                      ? 'bg-blue-600 dark:bg-dark-primary text-white shadow-sm'
+                      : 'text-gray-700 dark:text-dark-text-secondary hover:bg-gray-100 dark:hover:bg-dark-hover active:bg-gray-200 dark:active:bg-dark-hover'
                   }`}
                 >
-                  <span className={isActive ? 'text-white' : 'text-gray-600'}>
+                  <span className={`flex-shrink-0 ${isActive ? 'text-white' : 'text-gray-600 dark:text-dark-text-secondary'}`}>
                     {IconMap[item.icon]}
                   </span>
-                  {sidebarOpen && <span className="text-sm font-medium">{item.label}</span>}
+                  {(sidebarOpen || mobileMenuOpen) && <span className="text-sm font-medium truncate text-left">{item.label}</span>}
                 </button>
               );
             })}
@@ -165,83 +212,95 @@ export default function AppLayout({ children }: AppLayoutProps) {
       </aside>
 
       {/* Main Content */}
-      <main className={`flex-1 transition-all duration-300 ${sidebarOpen ? 'ml-64' : 'ml-20'}`}>
+      <main className={`flex-1 min-w-0 transition-all duration-300 ${sidebarOpen ? 'md:ml-64' : 'md:ml-20'}`}>
         {/* Top Header */}
-        <header className="bg-gray-100 border-b border-gray-200 sticky top-0 z-30">
-          <div className="flex items-center justify-between px-6 py-4">
-            <div className="flex items-center gap-4">
+        <header className="bg-gray-100 dark:bg-dark-sidebar-bg border-b border-gray-200 dark:border-dark-border sticky top-0 z-20">
+          <div className="flex items-center justify-between gap-2 px-3 py-3 sm:px-6 sm:py-4">
+            <div className="flex items-center gap-2 sm:gap-4 min-w-0">
+              <button
+                onClick={() => setMobileMenuOpen(true)}
+                className="p-2 hover:bg-gray-200 dark:hover:bg-dark-hover rounded-lg transition touch-manipulation md:hidden flex-shrink-0"
+                aria-label="Open menu"
+              >
+                <svg className="w-6 h-6 text-gray-600 dark:text-dark-text-secondary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+                </svg>
+              </button>
               {!sidebarOpen && (
                 <button
                   onClick={() => setSidebarOpen(true)}
-                  className="p-2 hover:bg-gray-200 rounded-lg transition"
+                  className="p-2 hover:bg-gray-200 dark:hover:bg-dark-hover rounded-lg transition hidden md:block"
+                  aria-label="Expand sidebar"
                 >
-                  <svg className="w-6 h-6 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <svg className="w-6 h-6 text-gray-600 dark:text-dark-text-secondary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
                   </svg>
                 </button>
               )}
-              <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-full bg-blue-600 flex items-center justify-center">
+              <div className="flex items-center gap-2 sm:gap-3 min-w-0">
+                <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-blue-600 flex items-center justify-center flex-shrink-0">
                   {user?.picture ? (
-                    <img src={user.picture} alt={user.name} className="w-10 h-10 rounded-full object-cover" />
+                    <img src={user.picture} alt={user.name} className="w-full h-full rounded-full object-cover" />
                   ) : (
-                    <span className="text-white font-semibold text-sm">
+                    <span className="text-white font-semibold text-xs sm:text-sm">
                       {user?.name?.charAt(0).toUpperCase()}
                     </span>
                   )}
                 </div>
-                <div>
-                  <p className="text-gray-900 font-semibold">Welcome Back!</p>
-                  <p className="text-gray-600 text-sm">Let's track your job applications</p>
+                <div className="min-w-0 hidden min-[400px]:block">
+                  <p className="text-gray-900 dark:text-dark-text-primary font-semibold text-sm sm:text-base truncate">Welcome Back!</p>
+                  <p className="text-gray-600 dark:text-dark-text-secondary text-xs sm:text-sm truncate hidden sm:block">Let&apos;s track your job applications</p>
                 </div>
               </div>
             </div>
             
-            <div className="flex items-center gap-4 relative" ref={profileMenuRef}>
+            <div className="flex items-center gap-2 sm:gap-4 relative flex-shrink-0" ref={profileMenuRef}>
               <button
                 onClick={() => setProfileMenuOpen(!profileMenuOpen)}
-                className="flex items-center gap-3 hover:bg-gray-200 rounded-lg px-2 py-1.5 transition"
+                className="flex items-center gap-2 sm:gap-3 hover:bg-gray-200 dark:hover:bg-dark-hover rounded-lg p-2 sm:px-2 sm:py-1.5 transition touch-manipulation min-h-[44px] min-w-[44px] justify-center md:justify-start"
+                aria-label="Profile menu"
+                aria-expanded={profileMenuOpen}
               >
                 {user?.picture ? (
-                  <img src={user.picture} alt={user.name} className="w-10 h-10 rounded-full object-cover" />
+                  <img src={user.picture} alt={user.name} className="w-9 h-9 sm:w-10 sm:h-10 rounded-full object-cover" />
                 ) : (
-                  <div className="w-10 h-10 rounded-full bg-blue-600 flex items-center justify-center">
-                    <span className="text-white font-semibold text-sm">
+                  <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-blue-600 flex items-center justify-center">
+                    <span className="text-white font-semibold text-xs sm:text-sm">
                       {user?.name?.charAt(0).toUpperCase()}
                     </span>
                   </div>
                 )}
-                <svg className="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg className="w-5 h-5 text-gray-600 dark:text-dark-text-secondary hidden sm:block" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
                 </svg>
               </button>
 
               {/* Profile Dropdown Menu */}
               {profileMenuOpen && (
-                <div className="absolute right-0 top-full mt-2 w-56 bg-white rounded-lg shadow-lg border border-gray-200 py-2 z-50">
-                  <div className="px-4 py-3 border-b border-gray-100">
-                    <p className="text-sm font-semibold text-gray-900">{user?.name}</p>
-                    <p className="text-xs text-gray-500 truncate">{user?.email}</p>
+                <div className="absolute right-0 top-full mt-2 w-56 bg-white dark:bg-dark-sidebar-bg rounded-lg shadow-lg border border-gray-200 dark:border-dark-border py-2 z-50">
+                  <div className="px-4 py-3 border-b border-gray-100 dark:border-dark-border">
+                    <p className="text-sm font-semibold text-gray-900 dark:text-dark-text-primary">{user?.name}</p>
+                    <p className="text-xs text-gray-500 dark:text-dark-text-secondary truncate">{user?.email}</p>
                   </div>
                   
                   <button
                     onClick={handleSettings}
-                    className="w-full flex items-center gap-3 px-4 py-2.5 text-left text-sm text-gray-700 hover:bg-gray-100 transition"
+                    className="w-full flex items-center gap-3 px-4 py-2.5 text-left text-sm text-gray-700 dark:text-dark-text-secondary hover:bg-gray-100 dark:hover:bg-dark-hover transition"
                   >
-                    <svg className="w-5 h-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <svg className="w-5 h-5 text-gray-500 dark:text-dark-text-secondary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
                     </svg>
                     <span>Profile Settings</span>
                   </button>
 
-                  <div className="border-t border-gray-100 my-1" />
+                  <div className="border-t border-gray-100 dark:border-dark-border my-1" />
 
                   <button
                     onClick={handleLogout}
-                    className="w-full flex items-center gap-3 px-4 py-2.5 text-left text-sm text-red-600 hover:bg-red-50 transition"
+                    className="w-full flex items-center gap-3 px-4 py-2.5 text-left text-sm text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/30 transition"
                   >
-                    <svg className="w-5 h-5 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <svg className="w-5 h-5 text-red-500 dark:text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
                     </svg>
                     <span>Logout</span>
@@ -253,7 +312,7 @@ export default function AppLayout({ children }: AppLayoutProps) {
         </header>
 
         {/* Page Content */}
-        <div className="p-8">
+        <div className="p-4 sm:p-6 lg:p-8 max-w-full overflow-x-hidden">
           {children}
         </div>
       </main>

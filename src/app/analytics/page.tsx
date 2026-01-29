@@ -310,7 +310,7 @@ export default function AnalyticsPage() {
     return (
       <AppLayout>
         <div className="max-w-7xl mx-auto">
-          <div className="text-center py-12 text-gray-500">Loading analytics...</div>
+          <div className="text-center py-12 text-gray-500 dark:text-dark-text-secondary">Loading analytics...</div>
         </div>
       </AppLayout>
     );
@@ -318,31 +318,31 @@ export default function AnalyticsPage() {
 
   return (
     <AppLayout>
-      <div className="max-w-7xl mx-auto">
-        <div className="mb-8">
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">Analytics</h1>
-          <p className="text-gray-600">View your job search statistics and insights</p>
+      <div className="max-w-7xl mx-auto px-4 sm:px-6">
+        <div className="mb-6 sm:mb-8">
+          <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-2">Analytics</h1>
+          <p className="text-sm sm:text-base text-gray-600 dark:text-dark-text-secondary">View your job search statistics and insights</p>
         </div>
 
         {/* Stats Cards */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-          <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-200">
-            <h3 className="text-sm font-medium text-gray-500 mb-2">Total Applications</h3>
+          <div className="bg-white dark:bg-dark-card-bg rounded-xl p-6 shadow-sm border border-gray-200 dark:border-dark-border">
+            <h3 className="text-sm font-medium text-gray-500 dark:text-dark-text-secondary mb-2">Total Applications</h3>
             <p className="text-3xl font-bold text-gray-900">{stats.total}</p>
           </div>
-          <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-200">
-            <h3 className="text-sm font-medium text-gray-500 mb-2">Active Pipeline</h3>
+          <div className="bg-white dark:bg-dark-card-bg rounded-xl p-6 shadow-sm border border-gray-200 dark:border-dark-border">
+            <h3 className="text-sm font-medium text-gray-500 dark:text-dark-text-secondary mb-2">Active Pipeline</h3>
             <p className="text-3xl font-bold text-blue-600">{stats.active}</p>
           </div>
-          <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-200">
-            <h3 className="text-sm font-medium text-gray-500 mb-2">Interviews</h3>
+          <div className="bg-white dark:bg-dark-card-bg rounded-xl p-6 shadow-sm border border-gray-200 dark:border-dark-border">
+            <h3 className="text-sm font-medium text-gray-500 dark:text-dark-text-secondary mb-2">Interviews</h3>
             <p className="text-3xl font-bold text-yellow-600">{stats.interviews}</p>
           </div>
-          <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-200">
-            <h3 className="text-sm font-medium text-gray-500 mb-2">Offers</h3>
+          <div className="bg-white dark:bg-dark-card-bg rounded-xl p-6 shadow-sm border border-gray-200 dark:border-dark-border">
+            <h3 className="text-sm font-medium text-gray-500 dark:text-dark-text-secondary mb-2">Offers</h3>
             <p className="text-3xl font-bold text-green-600">{stats.offers}</p>
             {stats.total > 0 && (
-              <p className="text-sm text-gray-500 mt-1">Success Rate: {successRate}%</p>
+              <p className="text-sm text-gray-500 dark:text-dark-text-secondary mt-1">Success Rate: {successRate}%</p>
             )}
           </div>
         </div>
@@ -350,7 +350,7 @@ export default function AnalyticsPage() {
         {/* Charts Grid */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
           {/* Status Distribution Pie Chart */}
-          <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-200">
+          <div className="bg-white dark:bg-dark-card-bg rounded-xl p-6 shadow-sm border border-gray-200 dark:border-dark-border">
             <h2 className="text-xl font-semibold text-gray-900 mb-6">Status Distribution</h2>
             {pieData.length > 0 ? (
               <div className="flex flex-col lg:flex-row items-center justify-between gap-8">
@@ -398,7 +398,7 @@ export default function AnalyticsPage() {
                               }}
                             />
                           </div>
-                          <span className="text-xs text-gray-500 mt-0.5">{segment.percentage}%</span>
+                          <span className="text-xs text-gray-500 dark:text-dark-text-secondary mt-0.5">{segment.percentage}%</span>
                         </div>
                       </div>
                     ))}
@@ -406,12 +406,12 @@ export default function AnalyticsPage() {
                 </div>
               </div>
             ) : (
-              <div className="text-center py-12 text-gray-500">No data available</div>
+              <div className="text-center py-12 text-gray-500 dark:text-dark-text-secondary">No data available</div>
             )}
           </div>
 
           {/* Status Bar Chart */}
-          <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-200">
+          <div className="bg-white dark:bg-dark-card-bg rounded-xl p-6 shadow-sm border border-gray-200 dark:border-dark-border">
             <h2 className="text-xl font-semibold text-gray-900 mb-4">Applications by Status</h2>
             {statusDistribution.length > 0 ? (
               <div className="space-y-4">
@@ -434,22 +434,22 @@ export default function AnalyticsPage() {
                 ))}
               </div>
             ) : (
-              <div className="text-center py-12 text-gray-500">No data available</div>
+              <div className="text-center py-12 text-gray-500 dark:text-dark-text-secondary">No data available</div>
             )}
           </div>
         </div>
 
         {/* Applications Over Time - Line Chart */}
-        <div className="bg-white rounded-xl p-8 shadow-sm border border-gray-200 mb-6">
+        <div className="bg-white dark:bg-dark-card-bg rounded-xl p-8 shadow-sm border border-gray-200 dark:border-dark-border mb-6">
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
             <div>
               <h2 className="text-2xl font-bold text-gray-900 mb-1">Applications Over Time</h2>
-              <p className="text-sm text-gray-500">
+              <p className="text-sm text-gray-500 dark:text-dark-text-secondary">
                 Track your application activity by {timePeriod === 'day' ? 'daily' : timePeriod === 'week' ? 'weekly' : timePeriod === 'month' ? 'monthly' : 'yearly'} trends
               </p>
             </div>
             {/* Time Period Filter */}
-            <div className="flex items-center gap-1.5 bg-gray-50 rounded-xl p-1 border border-gray-200">
+            <div className="flex items-center gap-1.5 bg-gray-50 rounded-xl p-1 border border-gray-200 dark:border-dark-border">
               {(['day', 'week', 'month', 'year'] as TimePeriod[]).map((period) => (
                 <button
                   key={period}
@@ -457,7 +457,7 @@ export default function AnalyticsPage() {
                   className={`px-4 py-2 rounded-lg text-sm font-semibold transition-all duration-200 ${
                     timePeriod === period
                       ? 'bg-blue-600 text-white shadow-md transform scale-105'
-                      : 'text-gray-600 hover:text-gray-900 hover:bg-gray-100'
+                      : 'text-gray-600 dark:text-dark-text-secondary hover:text-gray-900 hover:bg-gray-100'
                   }`}
                 >
                   {period.charAt(0).toUpperCase() + period.slice(1)}
@@ -466,8 +466,8 @@ export default function AnalyticsPage() {
             </div>
           </div>
           {applicationsOverTime.some((item) => item.count > 0) ? (
-            <div className="relative bg-gradient-to-b from-blue-50/30 to-transparent rounded-lg p-4 -mx-2">
-              <svg width="100%" height="350" viewBox="0 0 900 350" className="overflow-visible">
+            <div className="relative bg-gradient-to-b from-blue-50/30 to-transparent rounded-lg p-4 -mx-2 overflow-x-auto">
+              <svg width="100%" height="350" viewBox="0 0 900 350" className="overflow-visible min-w-[280px]">
                 {/* Grid lines */}
                 <defs>
                   <linearGradient id="lineGradient" x1="0%" y1="0%" x2="0%" y2="100%">
@@ -611,12 +611,12 @@ export default function AnalyticsPage() {
               </svg>
             </div>
           ) : (
-            <div className="text-center py-12 text-gray-500">No applications in the last 30 days</div>
+            <div className="text-center py-12 text-gray-500 dark:text-dark-text-secondary">No applications in the last 30 days</div>
           )}
         </div>
 
         {/* Status Trends Line Chart */}
-        <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-200 mb-6">
+        <div className="bg-white dark:bg-dark-card-bg rounded-xl p-6 shadow-sm border border-gray-200 dark:border-dark-border mb-6">
           <div className="flex items-center justify-between mb-4">
             <h2 className="text-xl font-semibold text-gray-900">Status Trends Over Time</h2>
             {/* Time Period Filter */}
@@ -628,7 +628,7 @@ export default function AnalyticsPage() {
                   className={`px-4 py-1.5 rounded-md text-sm font-medium transition-all ${
                     timePeriod === period
                       ? 'bg-white text-blue-600 shadow-sm'
-                      : 'text-gray-600 hover:text-gray-900'
+                      : 'text-gray-600 dark:text-dark-text-secondary hover:text-gray-900'
                   }`}
                 >
                   {period.charAt(0).toUpperCase() + period.slice(1)}
@@ -637,8 +637,8 @@ export default function AnalyticsPage() {
             </div>
           </div>
           {Object.keys(statusTrends).length > 0 ? (
-            <div className="relative bg-gradient-to-b from-purple-50/30 to-transparent rounded-lg p-4 -mx-2">
-              <svg width="100%" height="350" viewBox="0 0 900 350" className="overflow-visible">
+            <div className="relative bg-gradient-to-b from-purple-50/30 to-transparent rounded-lg p-4 -mx-2 overflow-x-auto">
+              <svg width="100%" height="350" viewBox="0 0 900 350" className="overflow-visible min-w-[280px]">
                 <defs>
                   {['Applied', 'Screening', 'Interview', 'Offer', 'Rejected'].map((status, idx) => {
                     const colors = ['#3B82F6', '#10B981', '#F59E0B', '#8B5CF6', '#EF4444'];
@@ -823,7 +823,7 @@ export default function AnalyticsPage() {
               </div>
             </div>
           ) : (
-            <div className="text-center py-16 text-gray-500">
+            <div className="text-center py-16 text-gray-500 dark:text-dark-text-secondary">
               <svg className="mx-auto h-12 w-12 text-gray-400 mb-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
               </svg>
@@ -834,7 +834,7 @@ export default function AnalyticsPage() {
 
         {/* Top Companies */}
         {topCompanies.length > 0 && (
-          <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-200">
+          <div className="bg-white dark:bg-dark-card-bg rounded-xl p-6 shadow-sm border border-gray-200 dark:border-dark-border">
             <h2 className="text-xl font-semibold text-gray-900 mb-4">Top Companies</h2>
             <div className="space-y-3">
               {topCompanies.map((company, index) => (

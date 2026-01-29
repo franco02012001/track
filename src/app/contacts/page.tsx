@@ -86,11 +86,11 @@ export default function ContactsPage() {
 
   return (
     <AppLayout>
-      <div className="max-w-7xl mx-auto">
-        <div className="flex items-center justify-between mb-8">
+      <div className="max-w-7xl mx-auto w-full">
+        <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between mb-6 sm:mb-8">
           <div>
-            <h1 className="text-3xl font-bold text-gray-900 mb-2">Contacts</h1>
-            <p className="text-gray-600">Manage your professional network</p>
+            <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-1 sm:mb-2">Contacts</h1>
+            <p className="text-sm sm:text-base text-gray-600 dark:text-dark-text-secondary">Manage your professional network</p>
           </div>
           <button
             onClick={() => {
@@ -98,7 +98,7 @@ export default function ContactsPage() {
               setEditingContact(null);
               setShowModal(true);
             }}
-            className="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-6 py-3 rounded-lg transition shadow-sm"
+            className="w-full sm:w-auto bg-blue-600 hover:bg-blue-700 text-white font-semibold px-6 py-3 rounded-lg transition shadow-sm touch-manipulation"
           >
             + Add Contact
           </button>
@@ -107,7 +107,7 @@ export default function ContactsPage() {
         {loading ? (
           <div className="text-center py-12 text-gray-500">Loading...</div>
         ) : contacts.length === 0 ? (
-          <div className="bg-white rounded-xl p-12 text-center shadow-sm border border-gray-200">
+          <div className="bg-white dark:bg-dark-card-bg rounded-xl p-12 text-center shadow-sm border border-gray-200 dark:border-dark-border">
             <h3 className="text-xl font-semibold text-gray-900 mb-2">No contacts yet</h3>
             <button
               onClick={() => {
@@ -121,13 +121,13 @@ export default function ContactsPage() {
             </button>
           </div>
         ) : (
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
             {contacts.map((contact) => (
-              <div key={contact._id} className="bg-white rounded-xl p-6 shadow-sm border border-gray-200">
+              <div key={contact._id} className="bg-white dark:bg-dark-card-bg rounded-xl p-4 sm:p-6 shadow-sm border border-gray-200 dark:border-dark-border">
                 <h3 className="text-lg font-semibold text-gray-900 mb-2">{contact.name}</h3>
-                {contact.company && <p className="text-gray-600 mb-1">{contact.company}</p>}
+                {contact.company && <p className="text-gray-600 dark:text-dark-text-secondary mb-1">{contact.company}</p>}
                 {contact.position && <p className="text-gray-500 text-sm mb-3">{contact.position}</p>}
-                <div className="space-y-1 text-sm text-gray-600">
+                <div className="space-y-1 text-sm text-gray-600 dark:text-dark-text-secondary">
                   {contact.email && <p>{contact.email}</p>}
                   {contact.phone && <p>{contact.phone}</p>}
                 </div>
@@ -164,12 +164,12 @@ export default function ContactsPage() {
 
         {showModal && (
           <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-            <div className="bg-white rounded-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+            <div className="bg-white dark:bg-dark-card-bg rounded-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
               <div className="p-6 border-b border-gray-200 bg-gray-50">
                 <h2 className="text-2xl font-bold text-gray-900">
                   {editingContact ? 'Edit Contact' : 'Add New Contact'}
                 </h2>
-                <p className="text-sm text-gray-600 mt-1">Add contact information for easy reference</p>
+                <p className="text-sm text-gray-600 dark:text-dark-text-secondary mt-1">Add contact information for easy reference</p>
               </div>
               <form onSubmit={handleSubmit} className="p-6 space-y-6">
                 <div>

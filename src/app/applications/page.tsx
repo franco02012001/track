@@ -330,52 +330,52 @@ function ApplicationsPageContent() {
   };
 
   const getWorkModeColor = (mode?: Application['workMode']) => {
-    if (!mode) return 'bg-gray-50 text-gray-600';
+    if (!mode) return 'bg-gray-50 text-gray-600 dark:text-dark-text-secondary';
     const colors: Record<string, string> = {
       'On-site': 'bg-amber-50 text-amber-700',
       Hybrid: 'bg-indigo-50 text-indigo-700',
       'Work from home': 'bg-emerald-50 text-emerald-700',
     };
-    return colors[mode] || 'bg-gray-50 text-gray-600';
+    return colors[mode] || 'bg-gray-50 text-gray-600 dark:text-dark-text-secondary';
   };
 
   return (
     <AppLayout>
-      <div className="max-w-7xl mx-auto">
-        <div className="mb-6">
-          <div className="flex items-center justify-between mb-6">
+      <div className="max-w-7xl mx-auto w-full">
+        <div className="mb-4 sm:mb-6">
+          <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between mb-4 sm:mb-6">
             <div>
-              <h1 className="text-3xl font-bold text-gray-900 mb-2">Applications</h1>
-              <p className="text-gray-600">Manage your job applications</p>
+              <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-dark-text-primary mb-1 sm:mb-2">Applications</h1>
+              <p className="text-sm sm:text-base text-gray-600 dark:text-dark-text-secondary">Manage your job applications</p>
             </div>
-            <div className="flex items-center gap-4">
+            <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 sm:gap-4">
             {/* View Toggle */}
-            <div className="inline-flex rounded-lg bg-gray-100 p-1 border border-gray-200">
+            <div className="inline-flex rounded-lg bg-gray-100 p-1 border border-gray-200 dark:border-dark-border self-start sm:self-center">
               <button
                 onClick={() => setViewMode('table')}
-                className={`px-4 py-2 text-sm font-medium rounded-md transition ${
+                className={`px-4 py-2 text-sm font-medium rounded-md transition flex items-center ${
                   viewMode === 'table'
-                    ? 'bg-white text-gray-900 shadow-sm'
-                    : 'text-gray-600 hover:text-gray-900'
+                    ? 'bg-white shadow-sm dark:bg-dark-primary'
+                    : 'hover:bg-white/80 dark:hover:bg-dark-hover text-gray-600 dark:text-blue-400'
                 }`}
               >
-                <svg className="w-4 h-4 inline mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg className={`w-4 h-4 inline mr-1.5 ${viewMode === 'table' ? 'text-blue-600 dark:text-white' : 'text-blue-600 dark:text-blue-400'}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 10h18M3 14h18m-9-4v8m-7 0h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
                 </svg>
-                Table
+                <span className={viewMode === 'table' ? 'text-gray-900 dark:text-white' : 'text-gray-600 dark:text-blue-400'}>Table</span>
               </button>
               <button
                 onClick={() => setViewMode('kanban')}
-                className={`px-4 py-2 text-sm font-medium rounded-md transition ${
+                className={`px-4 py-2 text-sm font-medium rounded-md transition flex items-center ${
                   viewMode === 'kanban'
-                    ? 'bg-white text-gray-900 shadow-sm'
-                    : 'text-gray-600 hover:text-gray-900'
+                    ? 'bg-white shadow-sm dark:bg-dark-primary'
+                    : 'hover:bg-white/80 dark:hover:bg-dark-hover text-gray-600 dark:text-blue-400'
                 }`}
               >
-                <svg className="w-4 h-4 inline mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg className={`w-4 h-4 inline mr-1.5 ${viewMode === 'kanban' ? 'text-blue-600 dark:text-white' : 'text-blue-600 dark:text-blue-400'}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 17V7m0 10a2 2 0 01-2 2H5a2 2 0 01-2-2V7a2 2 0 012-2h2a2 2 0 012 2m0 10a2 2 0 002 2h2a2 2 0 002-2M9 7a2 2 0 012-2h2a2 2 0 012 2m0 10V7m0 10a2 2 0 002 2h2a2 2 0 002-2V7a2 2 0 00-2-2h-2a2 2 0 00-2 2" />
                 </svg>
-                Kanban
+                <span className={viewMode === 'kanban' ? 'text-gray-900 dark:text-white' : 'text-gray-600 dark:text-blue-400'}>Kanban</span>
               </button>
             </div>
             <button
@@ -384,7 +384,7 @@ function ApplicationsPageContent() {
                 setEditingApp(null);
                 setShowModal(true);
               }}
-              className="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-6 py-3 rounded-lg transition shadow-sm"
+              className="w-full sm:w-auto bg-blue-600 hover:bg-blue-700 text-white font-semibold px-6 py-3 rounded-lg transition shadow-sm touch-manipulation"
             >
               + Add Application
             </button>
@@ -402,7 +402,7 @@ function ApplicationsPageContent() {
               type="text"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="block w-full pl-10 pr-3 py-2.5 border border-gray-300 rounded-lg leading-5 bg-white placeholder-gray-500 focus:outline-none focus:placeholder-gray-400 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm text-gray-900"
+              className="block w-full pl-10 pr-3 py-2.5 border border-gray-300 rounded-lg leading-5 bg-white placeholder-gray-500 focus:outline-none focus:placeholder-gray-400 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm text-gray-900 dark:text-dark-text-primary"
               placeholder="Search by job title, company, location, description, or notes..."
             />
             {searchQuery && (
@@ -410,7 +410,7 @@ function ApplicationsPageContent() {
                 onClick={() => setSearchQuery('')}
                 className="absolute inset-y-0 right-0 pr-3 flex items-center"
               >
-                <svg className="h-5 w-5 text-gray-400 hover:text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg className="h-5 w-5 text-gray-400 hover:text-gray-600 dark:text-dark-text-secondary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
                 </svg>
               </button>
@@ -421,12 +421,12 @@ function ApplicationsPageContent() {
         {loading ? (
           <div className="text-center py-12 text-gray-500">Loading...</div>
         ) : applications.length === 0 ? (
-          <div className="bg-white rounded-xl p-12 text-center shadow-sm border border-gray-200">
+          <div className="bg-white dark:bg-dark-card-bg rounded-xl p-12 text-center shadow-sm border border-gray-200 dark:border-dark-border">
             <svg className="w-16 h-16 text-gray-400 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
             </svg>
-            <h3 className="text-xl font-semibold text-gray-900 mb-2">No applications yet</h3>
-            <p className="text-gray-600 mb-6">Get started by adding your first job application</p>
+            <h3 className="text-xl font-semibold text-gray-900 dark:text-dark-text-primary mb-2">No applications yet</h3>
+            <p className="text-gray-600 dark:text-dark-text-secondary mb-6">Get started by adding your first job application</p>
             <button
               onClick={() => {
                 resetForm();
@@ -439,12 +439,12 @@ function ApplicationsPageContent() {
             </button>
           </div>
         ) : filteredApplications.length === 0 && searchQuery ? (
-          <div className="bg-white rounded-xl p-12 text-center shadow-sm border border-gray-200">
+          <div className="bg-white dark:bg-dark-card-bg rounded-xl p-12 text-center shadow-sm border border-gray-200 dark:border-dark-border">
             <svg className="w-16 h-16 text-gray-400 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
             </svg>
-            <h3 className="text-xl font-semibold text-gray-900 mb-2">No results found</h3>
-            <p className="text-gray-600 mb-6">Try adjusting your search query</p>
+            <h3 className="text-xl font-semibold text-gray-900 dark:text-dark-text-primary mb-2">No results found</h3>
+            <p className="text-gray-600 dark:text-dark-text-secondary mb-6">Try adjusting your search query</p>
             <button
               onClick={() => setSearchQuery('')}
               className="px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition text-sm font-medium"
@@ -453,63 +453,65 @@ function ApplicationsPageContent() {
             </button>
           </div>
         ) : viewMode === 'table' ? (
-          <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
-            <div className="overflow-x-auto">
-              <table className="w-full">
-                <thead className="bg-gray-50 border-b border-gray-200">
+          <div className="bg-white dark:bg-dark-card-bg rounded-xl shadow-sm border border-gray-200 dark:border-dark-border overflow-hidden -mx-2 sm:mx-0">
+            <div className="overflow-x-auto -webkit-overflow-scrolling-touch">
+              <table className="w-full min-w-[640px]">
+                <thead className="bg-gray-50 dark:bg-dark-hover border-b border-gray-200 dark:border-dark-border">
                   <tr>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Job Title</th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Company</th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Work Setup</th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Applied Date</th>
-                    <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+                    <th className="px-3 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Job Title</th>
+                    <th className="px-3 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Company</th>
+                    <th className="px-3 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider hidden md:table-cell">Work Setup</th>
+                    <th className="px-3 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                    <th className="px-3 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider hidden lg:table-cell">Applied Date</th>
+                    <th className="px-3 sm:px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
                   </tr>
                 </thead>
                 <tbody className="bg-white divide-y divide-gray-200">
                   {filteredApplications.map((app) => (
-                    <tr key={app._id} className="hover:bg-gray-50">
-                      <td className="px-6 py-4 whitespace-nowrap">
-                        <div className="text-sm font-medium text-gray-900">{app.jobTitle}</div>
+                    <tr key={app._id} className="hover:bg-gray-50 dark:hover:bg-dark-hover">
+                      <td className="px-3 sm:px-6 py-3 sm:py-4 whitespace-nowrap">
+                        <div className="text-sm font-medium text-gray-900 dark:text-dark-text-primary">{app.jobTitle}</div>
                         {app.location && (
                           <div className="text-sm text-gray-500">{app.location}</div>
                         )}
                       </td>
-                      <td className="px-6 py-4 whitespace-nowrap">
-                        <div className="text-sm text-gray-900">{app.company}</div>
+                      <td className="px-3 sm:px-6 py-3 sm:py-4 whitespace-nowrap">
+                        <div className="text-sm text-gray-900 dark:text-dark-text-primary">{app.company}</div>
                       </td>
-                      <td className="px-6 py-4 whitespace-nowrap">
+                      <td className="px-3 sm:px-6 py-3 sm:py-4 whitespace-nowrap hidden md:table-cell">
                         <span className={`px-2 py-1 text-xs font-medium rounded-full ${getWorkModeColor(app.workMode)}`}>
                           {app.workMode || 'Not set'}
                         </span>
                       </td>
-                      <td className="px-6 py-4 whitespace-nowrap">
+                      <td className="px-3 sm:px-6 py-3 sm:py-4 whitespace-nowrap">
                         <span className={`px-2 py-1 text-xs font-medium rounded-full ${getStatusColor(app.status)}`}>
                           {app.status}
                         </span>
                       </td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                      <td className="px-3 sm:px-6 py-3 sm:py-4 whitespace-nowrap text-sm text-gray-500 hidden lg:table-cell">
                         {formatDate(app.appliedDate || app.createdAt)}
                       </td>
-                      <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                        <button
-                          onClick={() => handleView(app)}
-                          className="text-gray-600 hover:text-gray-900 mr-4"
-                        >
-                          View
-                        </button>
-                        <button
-                          onClick={() => handleEdit(app)}
-                          className="text-blue-600 hover:text-blue-900 mr-4"
-                        >
-                          Edit
-                        </button>
-                        <button
-                          onClick={() => handleDelete(app._id)}
-                          className="text-red-600 hover:text-red-900"
-                        >
-                          Delete
-                        </button>
+                      <td className="px-3 sm:px-6 py-3 sm:py-4 whitespace-nowrap text-right text-sm font-medium">
+                        <div className="flex items-center justify-end gap-1 sm:gap-2">
+                          <button
+                            onClick={() => handleView(app)}
+                            className="text-gray-600 dark:text-dark-text-secondary hover:text-gray-900 dark:text-dark-text-primary p-1 sm:p-0 touch-manipulation"
+                          >
+                            View
+                          </button>
+                          <button
+                            onClick={() => handleEdit(app)}
+                            className="text-blue-600 hover:text-blue-900 p-1 sm:p-0 touch-manipulation"
+                          >
+                            Edit
+                          </button>
+                          <button
+                            onClick={() => handleDelete(app._id)}
+                            className="text-red-600 hover:text-red-900 p-1 sm:p-0 touch-manipulation"
+                          >
+                            Delete
+                          </button>
+                        </div>
                       </td>
                     </tr>
                   ))}
@@ -529,9 +531,9 @@ function ApplicationsPageContent() {
                     onDragOver={handleDragOver}
                     onDrop={(e) => handleDrop(e, status)}
                   >
-                    <div className="bg-gray-50 rounded-lg p-4 border border-gray-200">
+                    <div className="bg-gray-50 rounded-lg p-4 border border-gray-200 dark:border-dark-border">
                       <div className="flex items-center justify-between mb-3">
-                        <h3 className="text-sm font-semibold text-gray-900 flex items-center gap-2">
+                        <h3 className="text-sm font-semibold text-gray-900 dark:text-dark-text-primary flex items-center gap-2">
                           <span className={`w-2 h-2 rounded-full ${getStatusColor(status).split(' ')[0]}`}></span>
                           {status}
                         </h3>
@@ -545,12 +547,12 @@ function ApplicationsPageContent() {
                             key={app._id}
                             draggable
                             onDragStart={(e) => handleDragStart(e, app)}
-                            className="bg-white rounded-lg p-4 shadow-sm border border-gray-200 hover:shadow-md transition cursor-move"
+                            className="bg-white dark:bg-dark-card-bg rounded-lg p-4 shadow-sm border border-gray-200 dark:border-dark-border hover:shadow-md transition cursor-move"
                           >
                             <div className="flex items-start justify-between mb-2">
                               <div className="flex-1 min-w-0">
-                                <h4 className="text-sm font-semibold text-gray-900 truncate">{app.jobTitle}</h4>
-                                <p className="text-xs text-gray-600 mt-0.5">{app.company}</p>
+                                <h4 className="text-sm font-semibold text-gray-900 dark:text-dark-text-primary truncate">{app.jobTitle}</h4>
+                                <p className="text-xs text-gray-600 dark:text-dark-text-secondary mt-0.5">{app.company}</p>
                               </div>
                               <div className="flex gap-1 ml-2">
                                 <button
@@ -558,7 +560,7 @@ function ApplicationsPageContent() {
                                     e.stopPropagation();
                                     handleView(app);
                                   }}
-                                  className="p-1 text-gray-400 hover:text-gray-600 transition"
+                                  className="p-1 text-gray-400 hover:text-gray-600 dark:text-dark-text-secondary transition"
                                   title="View"
                                 >
                                   <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -617,20 +619,20 @@ function ApplicationsPageContent() {
 
         {/* Add/Edit Modal */}
         {showModal && (
-          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-            <div className="bg-white rounded-2xl max-w-3xl w-full max-h-[90vh] overflow-y-auto shadow-xl border border-gray-200">
+          <div className="fixed inset-0 bg-black/50 flex items-end sm:items-center justify-center z-50 p-0 sm:p-4 safe-area-pb">
+            <div className="bg-white rounded-t-2xl sm:rounded-2xl max-w-3xl w-full max-h-[90vh] sm:max-h-[90vh] overflow-y-auto shadow-xl border border-gray-200 dark:border-dark-border flex-1 sm:flex-none">
               <div className="p-6 border-b border-gray-200 bg-gradient-to-r from-blue-50 to-indigo-50">
-                <h2 className="text-2xl font-bold text-gray-900">
+                <h2 className="text-2xl font-bold text-gray-900 dark:text-dark-text-primary">
                   {editingApp ? 'Edit application' : 'Add new application'}
                 </h2>
-                <p className="text-sm text-gray-600 mt-1">
+                <p className="text-sm text-gray-600 dark:text-dark-text-secondary mt-1">
                   Enter the key details of this job so you can easily track its progress.
                 </p>
               </div>
               <form onSubmit={handleSubmit} className="p-6 space-y-8">
                 {/* Role details */}
                 <div>
-                  <h3 className="text-sm font-semibold text-gray-900 mb-3">Role details</h3>
+                  <h3 className="text-sm font-semibold text-gray-900 dark:text-dark-text-primary mb-3">Role details</h3>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div>
                       <label className="block text-xs font-semibold text-gray-700 mb-1 uppercase tracking-wide">
@@ -641,7 +643,7 @@ function ApplicationsPageContent() {
                         required
                         value={formData.jobTitle}
                         onChange={(e) => setFormData({ ...formData, jobTitle: e.target.value })}
-                        className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition text-gray-900 text-sm placeholder:text-gray-400"
+                        className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition text-gray-900 dark:text-dark-text-primary text-sm placeholder:text-gray-400"
                         placeholder="e.g., Senior Software Engineer"
                       />
                     </div>
@@ -654,7 +656,7 @@ function ApplicationsPageContent() {
                         required
                         value={formData.company}
                         onChange={(e) => setFormData({ ...formData, company: e.target.value })}
-                        className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition text-gray-900 text-sm placeholder:text-gray-400"
+                        className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition text-gray-900 dark:text-dark-text-primary text-sm placeholder:text-gray-400"
                         placeholder="e.g., Tech Corp"
                       />
                     </div>
@@ -663,7 +665,7 @@ function ApplicationsPageContent() {
 
                 {/* Location & setup */}
                 <div>
-                  <h3 className="text-sm font-semibold text-gray-900 mb-3">Location & work setup</h3>
+                  <h3 className="text-sm font-semibold text-gray-900 dark:text-dark-text-primary mb-3">Location & work setup</h3>
                   <div className="grid grid-cols-1 md:grid-cols-3 gap-6 items-start">
                     <div>
                       <label className="block text-xs font-semibold text-gray-700 mb-1 uppercase tracking-wide">
@@ -673,7 +675,7 @@ function ApplicationsPageContent() {
                         type="text"
                         value={formData.location}
                         onChange={(e) => setFormData({ ...formData, location: e.target.value })}
-                        className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition text-gray-900 text-sm placeholder:text-gray-400"
+                        className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition text-gray-900 dark:text-dark-text-primary text-sm placeholder:text-gray-400"
                         placeholder="e.g., San Francisco, CA or Remote"
                       />
                     </div>
@@ -684,7 +686,7 @@ function ApplicationsPageContent() {
                       <select
                         value={formData.workMode || 'On-site'}
                         onChange={(e) => setFormData({ ...formData, workMode: e.target.value as Application['workMode'] })}
-                        className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition text-gray-900 text-sm"
+                        className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition text-gray-900 dark:text-dark-text-primary text-sm"
                       >
                         <option value="On-site">On-site</option>
                         <option value="Hybrid">Hybrid</option>
@@ -698,7 +700,7 @@ function ApplicationsPageContent() {
                       <select
                         value={formData.status}
                         onChange={(e) => setFormData({ ...formData, status: e.target.value as Application['status'] })}
-                        className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition text-gray-900 text-sm"
+                        className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition text-gray-900 dark:text-dark-text-primary text-sm"
                       >
                         <option value="Applied">Applied</option>
                         <option value="Screening">Screening</option>
@@ -721,7 +723,7 @@ function ApplicationsPageContent() {
                       type="url"
                       value={formData.jobUrl}
                       onChange={(e) => setFormData({ ...formData, jobUrl: e.target.value })}
-                      className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition text-sm text-gray-900 placeholder:text-gray-400"
+                      className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition text-sm text-gray-900 dark:text-dark-text-primary placeholder:text-gray-400"
                       placeholder="https://company.com/careers/..."
                     />
                   </div>
@@ -733,7 +735,7 @@ function ApplicationsPageContent() {
                       value={formData.description}
                       onChange={(e) => setFormData({ ...formData, description: e.target.value })}
                       rows={4}
-                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition resize-none text-gray-900 text-sm placeholder:text-gray-400"
+                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition resize-none text-gray-900 dark:text-dark-text-primary text-sm placeholder:text-gray-400"
                       placeholder="Paste the job description or key responsibilities here..."
                     />
                   </div>
@@ -741,7 +743,7 @@ function ApplicationsPageContent() {
 
                 {/* Timeline & compensation */}
                 <div>
-                  <h3 className="text-sm font-semibold text-gray-900 mb-3">Timeline & compensation</h3>
+                  <h3 className="text-sm font-semibold text-gray-900 dark:text-dark-text-primary mb-3">Timeline & compensation</h3>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div>
                       <label className="block text-xs font-semibold text-gray-700 mb-1 uppercase tracking-wide">
@@ -751,7 +753,7 @@ function ApplicationsPageContent() {
                         type="text"
                         value={formData.salary}
                         onChange={(e) => setFormData({ ...formData, salary: e.target.value })}
-                        className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition text-gray-900 text-sm placeholder:text-gray-400"
+                        className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition text-gray-900 dark:text-dark-text-primary text-sm placeholder:text-gray-400"
                         placeholder="e.g., $100,000 - $120,000 or 80k base + bonus"
                       />
                     </div>
@@ -763,7 +765,7 @@ function ApplicationsPageContent() {
                         type="date"
                         value={formData.appliedDate}
                         onChange={(e) => setFormData({ ...formData, appliedDate: e.target.value })}
-                        className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition text-gray-900 text-sm"
+                        className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition text-gray-900 dark:text-dark-text-primary text-sm"
                       />
                     </div>
                   </div>
@@ -778,7 +780,7 @@ function ApplicationsPageContent() {
                     value={formData.notes}
                     onChange={(e) => setFormData({ ...formData, notes: e.target.value })}
                     rows={4}
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition resize-none text-gray-900 text-sm placeholder:text-gray-400"
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition resize-none text-gray-900 dark:text-dark-text-primary text-sm placeholder:text-gray-400"
                     placeholder="Add next steps, interviewers, follow-up dates, or any other context..."
                   />
                 </div>
@@ -795,10 +797,10 @@ function ApplicationsPageContent() {
                         className="mt-1 w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
                       />
                       <div className="flex-1">
-                        <label htmlFor="createFollowUpReminder" className="block text-sm font-semibold text-gray-900 mb-1 cursor-pointer">
+                        <label htmlFor="createFollowUpReminder" className="block text-sm font-semibold text-gray-900 dark:text-dark-text-primary mb-1 cursor-pointer">
                           Create follow-up reminder
                         </label>
-                        <p className="text-xs text-gray-600">
+                        <p className="text-xs text-gray-600 dark:text-dark-text-secondary">
                           Automatically create a reminder to check for updates 3 working days after your application date. 
                           {formData.appliedDate && (
                             <span className="block mt-1 font-medium text-blue-700">
@@ -843,10 +845,10 @@ function ApplicationsPageContent() {
         {/* View Options / Summary Modal */}
         {showViewModal && viewingApp && (
           <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-            <div className="bg-white rounded-2xl max-w-xl w-full max-h-[80vh] overflow-y-auto shadow-xl border border-gray-200">
+            <div className="bg-white rounded-2xl max-w-xl w-full max-h-[80vh] overflow-y-auto shadow-xl border border-gray-200 dark:border-dark-border">
               <div className="p-6 border-b border-gray-200 bg-gradient-to-r from-slate-50 to-slate-100">
-                <h2 className="text-xl font-bold text-gray-900">View application</h2>
-                <p className="text-sm text-gray-600 mt-1">
+                <h2 className="text-xl font-bold text-gray-900 dark:text-dark-text-primary">View application</h2>
+                <p className="text-sm text-gray-600 dark:text-dark-text-secondary mt-1">
                   Choose how you want to view this application.
                 </p>
               </div>
@@ -884,7 +886,7 @@ function ApplicationsPageContent() {
                   <button
                     type="button"
                     onClick={() => openJobUrl(viewingApp)}
-                    className="flex flex-col items-start justify-between px-4 py-3 border border-gray-200 rounded-xl hover:border-blue-500 hover:bg-blue-50 transition text-left disabled:opacity-50 disabled:cursor-not-allowed"
+                    className="flex flex-col items-start justify-between px-4 py-3 border border-gray-200 dark:border-dark-border rounded-xl hover:border-blue-500 hover:bg-blue-50 transition text-left disabled:opacity-50 disabled:cursor-not-allowed"
                     disabled={!viewingApp.jobUrl}
                   >
                     <div className="flex items-center gap-2 mb-1">
@@ -902,7 +904,7 @@ function ApplicationsPageContent() {
                   <button
                     type="button"
                     onClick={() => setShowSummary(true)}
-                    className="flex flex-col items-start justify-between px-4 py-3 border border-gray-200 rounded-xl hover:border-indigo-500 hover:bg-indigo-50 transition text-left"
+                    className="flex flex-col items-start justify-between px-4 py-3 border border-gray-200 dark:border-dark-border rounded-xl hover:border-indigo-500 hover:bg-indigo-50 transition text-left"
                   >
                     <div className="flex items-center gap-2 mb-1">
                       <svg className="w-4 h-4 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -919,7 +921,7 @@ function ApplicationsPageContent() {
                 {/* Related Tasks & Reminders - Always visible */}
                 {relatedTasks.length > 0 && (
                   <div className="border-t border-gray-200 pt-6 mt-6">
-                    <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2">
+                    <h3 className="text-lg font-semibold text-gray-900 dark:text-dark-text-primary mb-4 flex items-center gap-2">
                       <svg className="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4" />
                       </svg>
@@ -927,12 +929,12 @@ function ApplicationsPageContent() {
                     </h3>
                     <div className="space-y-3">
                       {relatedTasks.map((task: Task) => (
-                        <div key={task._id} className="bg-gray-50 rounded-lg p-4 border border-gray-200">
+                        <div key={task._id} className="bg-gray-50 rounded-lg p-4 border border-gray-200 dark:border-dark-border">
                           <div className="flex items-start justify-between">
                             <div className="flex-1">
-                              <h4 className="font-medium text-gray-900 mb-1">{task.title}</h4>
+                              <h4 className="font-medium text-gray-900 dark:text-dark-text-primary mb-1">{task.title}</h4>
                               {task.description && (
-                                <p className="text-sm text-gray-600 mb-2">{task.description}</p>
+                                <p className="text-sm text-gray-600 dark:text-dark-text-secondary mb-2">{task.description}</p>
                               )}
                               <div className="flex items-center gap-3 flex-wrap">
                                 <span className={`px-2 py-1 text-xs font-medium rounded-full ${
@@ -950,7 +952,7 @@ function ApplicationsPageContent() {
                                   {task.status}
                                 </span>
                                 {task.dueDate && (
-                                  <span className="text-xs text-gray-600 flex items-center gap-1">
+                                  <span className="text-xs text-gray-600 dark:text-dark-text-secondary flex items-center gap-1">
                                     <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
                                     </svg>
